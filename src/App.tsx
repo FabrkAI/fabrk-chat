@@ -1,11 +1,18 @@
 import "./App.css";
-import MessageInput from "./MessageInput";
+import MessageListContainer from "./components/MessageListContainer";
+import { CampaignContextWrapper } from "./hooks/CampaignContext";
+import { MessageContextWrapper } from "./hooks/MessageContext";
+import { SessionContextWrapper } from "./hooks/SessionContext";
 
 function App() {
   return (
-    <div className="h-screen relative">
-      <MessageInput />
-    </div>
+    <SessionContextWrapper>
+      <CampaignContextWrapper>
+        <MessageContextWrapper>
+          <MessageListContainer />
+        </MessageContextWrapper>
+      </CampaignContextWrapper>
+    </SessionContextWrapper>
   );
 }
 
