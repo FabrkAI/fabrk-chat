@@ -40,10 +40,10 @@ function MessageInput() {
             color: textColor,
             borderTopLeftRadius: "50%",
             borderTopRightRadius: "50%",
-            padding: "8px",
+            padding: "4px",
           }}
         >
-          <ChevronDoubleUpIcon className="h-6 w-6" fill={textColor} />
+          <ChevronDoubleUpIcon className="h-4 w-4" fill={textColor} />
         </button>
       )}
       <form

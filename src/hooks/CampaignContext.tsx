@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 import { getCampaignByName } from "../api/campaign.api";
@@ -8,9 +8,12 @@ import {
   getCompanyIdFromUrl,
   replaceHyphenWithSpace,
 } from "../utils/stringManipulation";
+import { useSessionContext } from "./SessionContext";
 
 export const CampaignContextWrapper = (props: any) => {
   const url = window.location.pathname;
+
+  const { createSession, fabrkSession } = useSessionContext();
 
   const companySlug = getCompanyIdFromUrl(url);
 
@@ -32,6 +35,15 @@ export const CampaignContextWrapper = (props: any) => {
       setGlobalLoading(false);
     },
   });
+
+  useEffect(() => {
+    if (!fabrkSession?.id && campaign?.id) {
+      createSession({
+        source: window.location.pathname,
+        campaignId: campaign?.id,
+      });
+    }
+  }, [campaign, fabrkSession]);
 
   const value = {
     loading: isLoading || globalLoading,

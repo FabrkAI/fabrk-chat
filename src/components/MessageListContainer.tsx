@@ -16,8 +16,8 @@ function _MessageListContainer() {
   return (
     <div className="flex-1 flex flex-col min-h-screen ">
       <div className="flex-1 flex flex-col">
-        {messages && messages.length > 0 && (
-          <div className="flex-1 flex flex-col gap-5 justify-end p-4">
+        <div className="flex-1 flex flex-col gap-5 justify-end p-4">
+          {messages && messages.length > 0 && (
             <div
               className="flex flex-col-reverse overflow-y-auto max-h-[calc(100vh-150px)] justify-end"
               style={{
@@ -28,12 +28,12 @@ function _MessageListContainer() {
             >
               {showMessages && <MessageViewContainer />}
             </div>
+          )}
 
-            <div className="mt-8 w-full max-w-2xl flex flex-col gap-5 message-input">
-              <MessageInput />
-            </div>
+          <div className="mt-8 w-full max-w-2xl flex flex-col gap-5 message-input">
+            <MessageInput />
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
