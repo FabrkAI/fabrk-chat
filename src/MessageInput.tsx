@@ -26,14 +26,14 @@ function MessageInput() {
 
   return (
     <div
-      className="flex justify-center z-15 relative"
+      className="flex justify-center z-15 relative "
       style={{
         zIndex: 15,
       }}
     >
       {!showMessages && (
         <button
-          className="fixed bottom-24 left-1/2 transform -translate-x-1/2 show-messages-button shadow-lg"
+          className="fixed bottom-24 left-1/2 transform -translate-x-1/2 show-messages-button "
           onClick={() => setShowMessages(true)}
           style={{
             backgroundColor,
@@ -49,69 +49,90 @@ function MessageInput() {
       <form
         onSubmit={handleSubmit}
         className={
-          "fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full  sm:w-1/2 sm:left-1/4 sm:transform-none shadow-lg"
+          "fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full sm:w-1/2 sm:left-1/4 sm:transform-none  "
         }
+        style={{
+          width: width ? `${width}px` : "100%",
+        }}
       >
-        <div className="flex flex-col justify-center items-center">
-          <div
-            className={`flex flex-row items-center pb-sm overflow-auto max-h-[45vh]  outline-none  ${borderRadius}`}
+        <div
+          className={`flex flex-row items-center pb-sm overflow-auto max-h-[45vh]  outline-none  ${borderRadius} shadow-lg`}
+          style={{
+            height: "56px",
+            border: "none",
+            outline: "none",
+            width: width ? `${width}px` : "100%",
+            backgroundColor: backgroundColor || "#252222",
+            color: textColor,
+            borderRadius: `${borderRadius}px`,
+            borderColor: borderColor,
+          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        >
+          <textarea
+            onChange={(e) => setInputValue(e.target.value)}
+            value={inputValue}
+            placeholder="Send message..."
+            className="outline-none border-none resize-none  focus:outline-none focus:border-none p-2"
+            autoComplete="off"
+            autoFocus={false}
             style={{
               height: "56px",
               border: "none",
               outline: "none",
               boxShadow: "none",
               width: width ? `${width}px` : "100%",
-              backgroundColor: backgroundColor || "#252222",
               color: textColor,
               borderRadius: `${borderRadius}px`,
-              borderColor: borderColor,
+              backgroundColor: backgroundColor || "#252222",
             }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSubmit(e as any);
+              }
+            }}
+          />
+          <button
+            type="submit"
+            className="m-1 outline-none  duration-300   relative justify-center text-center items-center rounded-full cursor-pointer  inline-flex text-sm h-8"
+            style={{
+              backgroundColor,
+              color: textColor,
+              borderRadius: "50%",
+              width: "32px",
+              height: "32px",
+            }}
           >
-            <textarea
-              onChange={(e) => setInputValue(e.target.value)}
-              value={inputValue}
-              placeholder="Send message..."
-              className="outline-none border-none resize-none  focus:outline-none focus:border-none p-2"
-              autoComplete="off"
-              autoFocus={false}
-              style={{
-                height: "56px",
-                border: "none",
-                outline: "none",
-                boxShadow: "none",
-                width: width ? `${width}px` : "100%",
-                color: textColor,
-                borderRadius: `${borderRadius}px`,
-                backgroundColor: backgroundColor || "#252222",
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleSubmit(e as any);
-                }
-              }}
-            ></textarea>
-            <button
-              type="submit"
-              className="m-1 outline-none  duration-300   relative justify-center text-center items-center rounded-full cursor-pointer  inline-flex text-sm h-8"
-              style={{
-                backgroundColor,
-                color: textColor,
-                borderRadius: "50%",
-                width: "32px",
-                height: "32px",
-              }}
-            >
-              <div className="flex items-center leading-none justify-center gap-xs">
-                <ArrowRightIcon className="h-4 w-4" />
-              </div>
-            </button>
-          </div>
+            <div className="flex items-center leading-none justify-center gap-xs">
+              <ArrowRightIcon className="h-4 w-4" />
+            </div>
+          </button>
         </div>
+        <p
+          className="text-center mt-1"
+          style={{
+            color: textColor,
+            fontSize: "9px",
+          }}
+        >
+          Woven with 🧡 by{" "}
+          <a
+            href="https://fabrk.ai"
+            style={{
+              color: "orange",
+              textDecoration: "underline",
+              fontWeight: "bold",
+            }}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Fabrk.ai
+          </a>
+        </p>
       </form>
     </div>
   );
