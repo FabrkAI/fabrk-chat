@@ -11,7 +11,7 @@ import MessageViewContainer from "./MessageViewContainer";
 function _MessageListContainer() {
   const { messages } = useMessageContext();
 
-  const { width, borderRadius } = useInputConfigContext();
+  const { width, borderRadius, showMessages } = useInputConfigContext();
 
   return (
     <div className="flex-1 flex flex-col min-h-screen ">
@@ -26,10 +26,10 @@ function _MessageListContainer() {
                 margin: "0 auto",
               }}
             >
-              {true && <MessageViewContainer />}
+              {showMessages && <MessageViewContainer />}
             </div>
 
-            <div className="mt-8 w-full max-w-2xl flex flex-col gap-5">
+            <div className="mt-8 w-full max-w-2xl flex flex-col gap-5 message-input">
               <MessageInput />
             </div>
           </div>

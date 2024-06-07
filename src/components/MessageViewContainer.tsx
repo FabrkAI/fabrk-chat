@@ -10,8 +10,6 @@ import MessageLoadingSkeleton from "./MessageLoadingSkeleton";
 function MessageViewContainer() {
   const [borderColor] = useState("rgba(62, 73, 174, 0.2)");
 
-  const [showBadges] = useState(false);
-
   const {
     backgroundColor,
     textColor,
@@ -22,44 +20,34 @@ function MessageViewContainer() {
 
   const { loading, messages } = useMessageContext();
 
-  const [activeMessageId, setActiveMessageId] = useState<string>("");
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const eventTarget = event.target as HTMLElement;
 
       if (
         eventTarget.closest(".message-list") ||
-        eventTarget.closest(".show-messages-button")
+        eventTarget.closest(".show-messages-button") ||
+        eventTarget.closest(".message-input")
       ) {
         return;
       } else if (showMessages) {
         setShowMessages(false);
       }
-
-      if (eventTarget.closest(".badge-button")) {
-        return;
-      }
-
-      setActiveMessageId("");
     };
 
-    if (activeMessageId || showMessages) {
+    if (showMessages) {
       window.addEventListener("click", handleClickOutside);
     }
 
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
-  }, [activeMessageId]);
+  }, []);
 
   return (
     <div
-      className="w-full max-w-[800px] bg-gray-100 dark:bg-black p-4 overflow-scroll mx-auto max-h-screen my-10 relative message-list"
+      className="w-full max-w-[800px] bg-gray-100 dark:bg-black p-4 overflow-scroll mx-auto max-h-screen my-10 relative message-list shadow-lg"
       style={{
-        border: "none",
-        outline: "none",
-        boxShadow: "none",
         backgroundColor: backgroundColor,
         color: textColor,
         borderRadius: `${borderRadius}px`,
@@ -70,13 +58,13 @@ function MessageViewContainer() {
         className="absolute top-4 right-4 "
         onClick={() => setShowMessages(false)}
       >
-        <XMarkIcon className="h-6 w-6" color="orange" />
+        <XMarkIcon className="h-6 w-6" color={textColor} />
       </button>
       {messages?.map((message, index) => {
         if (message.role === "user") {
           return (
             <div key={index}>
-              <UserMessageChatItem message={message} showBadges={showBadges} />
+              <UserMessageChatItem message={message} />
             </div>
           );
         }

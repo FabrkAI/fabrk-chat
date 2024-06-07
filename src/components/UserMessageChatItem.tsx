@@ -2,19 +2,13 @@ import { SmsMessage } from "../api/sms.type";
 import { useInputConfigContext } from "../hooks/InputConfigContext";
 import { formatTimeStampToHumanReadableDateTimeSeconds } from "../utils/parseTimeStamp";
 
-function UserMessageChatItem({
-  message,
-  showBadges,
-}: {
-  message: SmsMessage;
-  showBadges: boolean;
-}) {
+function UserMessageChatItem({ message }: { message: SmsMessage }) {
   const { backgroundColor, textColor, borderRadius } = useInputConfigContext();
 
   return (
     <div className="flex justify-end mr-10">
       <div
-        className="bg-gray-900 text-white p-2 rounded-lg max-w-lg"
+        className="p-2 rounded-lg max-w-lg"
         style={{
           backgroundColor,
           color: textColor,
@@ -28,11 +22,15 @@ function UserMessageChatItem({
         >
           {message.content}
         </p>
-        {!showBadges && (
-          <p className="text-xs text-white">
-            {formatTimeStampToHumanReadableDateTimeSeconds(message.created_at)}
-          </p>
-        )}
+
+        <p
+          className="text-xs"
+          style={{
+            color: textColor,
+          }}
+        >
+          {formatTimeStampToHumanReadableDateTimeSeconds(message.created_at)}
+        </p>
       </div>
     </div>
   );

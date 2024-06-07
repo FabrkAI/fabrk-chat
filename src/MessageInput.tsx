@@ -33,8 +33,15 @@ function MessageInput() {
     >
       {!showMessages && (
         <button
-          className="fixed bottom-28 left-1/2 transform -translate-x-1/2 show-messages-button"
+          className="fixed bottom-24 left-1/2 transform -translate-x-1/2 show-messages-button shadow-lg"
           onClick={() => setShowMessages(true)}
+          style={{
+            backgroundColor,
+            color: textColor,
+            borderTopLeftRadius: "50%",
+            borderTopRightRadius: "50%",
+            padding: "8px",
+          }}
         >
           <ChevronDoubleUpIcon className="h-6 w-6" fill={textColor} />
         </button>
@@ -42,7 +49,7 @@ function MessageInput() {
       <form
         onSubmit={handleSubmit}
         className={
-          "fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full  sm:w-1/2 sm:left-1/4 sm:transform-none"
+          "fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full  sm:w-1/2 sm:left-1/4 sm:transform-none shadow-lg"
         }
       >
         <div className="flex flex-col justify-center items-center">
