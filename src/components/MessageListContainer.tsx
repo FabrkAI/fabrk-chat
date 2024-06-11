@@ -10,30 +10,26 @@ import MessageViewContainer from "./MessageViewContainer";
 
 function _MessageListContainer() {
   const { messages } = useMessageContext();
-
   const { width, borderRadius, showMessages } = useInputConfigContext();
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen ">
-      <div className="flex-1 flex flex-col">
-        <div className="flex-1 flex flex-col gap-5 justify-end p-4">
-          {messages && messages.length > 0 && (
-            <div
-              className="flex flex-col-reverse overflow-y-auto max-h-[calc(100vh-150px)] justify-end"
-              style={{
-                borderRadius: `${borderRadius}px`,
-                width: `${width}px`,
-                margin: "0 auto",
-              }}
-            >
-              {showMessages && <MessageViewContainer />}
-            </div>
-          )}
-
-          <div className="mt-8 w-full max-w-2xl flex flex-col gap-5 message-input">
-            <MessageInput />
+    <div className="flex-1 flex flex-col min-h-screen items-center">
+      <div
+        className="flex-1 flex flex-col justify-end p-4 w-full gap-5"
+        style={{ width: width ? `${width}px` : "100%" }}
+      >
+        {messages && messages.length > 0 && (
+          <div
+            className="flex flex-col-reverse overflow-y-auto max-h-[calc(100vh-150px)]"
+            style={{
+              borderRadius: `${borderRadius}px`,
+              marginBottom: "100px", // Ensure space for the input
+            }}
+          >
+            {showMessages && <MessageViewContainer />}
           </div>
-        </div>
+        )}
+        <MessageInput />
       </div>
     </div>
   );

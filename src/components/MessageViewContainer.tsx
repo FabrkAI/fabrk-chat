@@ -46,7 +46,7 @@ function MessageViewContainer() {
 
   return (
     <div
-      className="w-full max-w-[800px] bg-gray-100 dark:bg-black p-4 overflow-scroll mx-auto max-h-screen my-10 relative message-list shadow-lg"
+      className="relative p-4"
       style={{
         backgroundColor: backgroundColor,
         color: textColor,
@@ -55,7 +55,10 @@ function MessageViewContainer() {
       }}
     >
       <button
-        className="absolute top-4 right-4 "
+        className="absolute top-1 right-1 "
+        style={{
+          color: textColor,
+        }}
         onClick={() => setShowMessages(false)}
       >
         <XMarkIcon className="h-6 w-6" color={textColor} />

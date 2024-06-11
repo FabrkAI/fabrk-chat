@@ -25,15 +25,17 @@ function MessageInput() {
   }
 
   return (
-    <div
-      className="flex justify-center z-15 relative "
-      style={{
-        zIndex: 15,
-      }}
-    >
+    <div className="flex justify-center relative" style={{ zIndex: 15 }}>
+      <style>
+        {`
+          .custom-textarea::placeholder {
+            color: ${textColor};
+          }
+        `}
+      </style>
       {!showMessages && (
         <button
-          className="fixed bottom-24 left-1/2 transform -translate-x-1/2 show-messages-button "
+          className="fixed bottom-28 left-1/2 transform -translate-x-1/2 show-messages-button"
           onClick={() => setShowMessages(true)}
           style={{
             backgroundColor,
@@ -48,20 +50,13 @@ function MessageInput() {
       )}
       <form
         onSubmit={handleSubmit}
-        className={
-          "fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full sm:w-1/2 sm:left-1/4 sm:transform-none  "
-        }
-        style={{
-          width: width ? `${width}px` : "100%",
-        }}
+        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full sm:w-1/2 sm:left-1/2 sm:transform -translate-x-1/2"
+        style={{ width: width ? `${width}px` : "100%" }}
       >
         <div
-          className={`flex flex-row items-center pb-sm overflow-auto max-h-[45vh]  outline-none  ${borderRadius} shadow-lg`}
+          className={`flex flex-row items-center overflow-auto max-h-[45vh] outline-none ${borderRadius} shadow-lg`}
           style={{
             height: "56px",
-            border: "none",
-            outline: "none",
-            width: width ? `${width}px` : "100%",
             backgroundColor: backgroundColor || "#252222",
             color: textColor,
             borderRadius: `${borderRadius}px`,
@@ -76,15 +71,11 @@ function MessageInput() {
             onChange={(e) => setInputValue(e.target.value)}
             value={inputValue}
             placeholder="Send message..."
-            className="outline-none border-none resize-none  focus:outline-none focus:border-none p-2"
+            className="outline-none border-none resize-none focus:outline-none focus:border-none p-2 w-full custom-textarea"
             autoComplete="off"
             autoFocus={false}
             style={{
               height: "56px",
-              border: "none",
-              outline: "none",
-              boxShadow: "none",
-              width: width ? `${width}px` : "100%",
               color: textColor,
               borderRadius: `${borderRadius}px`,
               backgroundColor: backgroundColor || "#252222",
@@ -98,7 +89,7 @@ function MessageInput() {
           />
           <button
             type="submit"
-            className="m-1 outline-none  duration-300   relative justify-center text-center items-center rounded-full cursor-pointer  inline-flex text-sm h-8"
+            className="m-1 outline-none duration-300 relative justify-center text-center items-center rounded-full cursor-pointer inline-flex text-sm h-8"
             style={{
               backgroundColor,
               color: textColor,
@@ -112,27 +103,32 @@ function MessageInput() {
             </div>
           </button>
         </div>
-        <p
-          className="text-center mt-1"
+        <div
+          className="text-center w-fit items-center justify-center flex p-1"
           style={{
             color: textColor,
             fontSize: "9px",
+            backgroundColor: backgroundColor || "#252222",
+            margin: "1px auto",
+            borderRadius: `${borderRadius}px`,
           }}
         >
-          Woven with 🧡 by{" "}
-          <a
-            href="https://fabrk.ai"
-            style={{
-              color: "orange",
-              textDecoration: "underline",
-              fontWeight: "bold",
-            }}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Fabrk.ai
-          </a>
-        </p>
+          <p>
+            Woven with 🧡 by{" "}
+            <a
+              href="https://fabrk.ai"
+              style={{
+                color: "orange",
+                textDecoration: "underline",
+                fontWeight: "bold",
+              }}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Fabrk.ai
+            </a>
+          </p>
+        </div>
       </form>
     </div>
   );
