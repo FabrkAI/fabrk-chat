@@ -19,8 +19,6 @@ export const InputConfigContextWrapper = ({
     enabled: companyId ? true : false,
   });
 
-  // const screenSize = useScreenSize();
-
   const value = {
     data,
     showMessages,

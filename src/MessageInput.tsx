@@ -2,6 +2,7 @@ import { ArrowRightIcon, ChevronDoubleUpIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 import { useMessageContext } from "./hooks/MessageContext";
 import { useInputConfigContext } from "./hooks/InputConfigContext";
+import { useScreenSize } from "./hooks/ScreenSizeContext";
 
 function MessageInput() {
   const { handleCreateMessage } = useMessageContext();
@@ -25,6 +26,8 @@ function MessageInput() {
     setInputValue("");
     setShowMessages(true);
   }
+
+  const screenSize = useScreenSize();
 
   return (
     <div className="flex justify-center relative" style={{ zIndex: 15 }}>
@@ -53,7 +56,10 @@ function MessageInput() {
       <form
         onSubmit={handleSubmit}
         className="fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full sm:w-1/2 sm:left-1/2 sm:transform -translate-x-1/2"
-        style={{ width: width ? `${width}px` : "100%" }}
+        style={{
+          width:
+            width && screenSize.width > Number(width) ? `${width}px` : "100%",
+        }}
       >
         <div
           className={`flex flex-row items-center overflow-auto max-h-[45vh] outline-none ${borderRadius} shadow-lg`}
@@ -63,6 +69,7 @@ function MessageInput() {
             color,
             borderRadius: `${borderRadius}px`,
             borderColor: borderColor,
+            margin: "4px 4px 4px 4px",
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

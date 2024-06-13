@@ -6,6 +6,7 @@ import {
   useInputConfigContext,
 } from "../hooks/InputConfigContext";
 import { useMessageContext } from "../hooks/MessageContext";
+import { useScreenSize } from "../hooks/ScreenSizeContext";
 import MessageViewContainer from "./MessageViewContainer";
 
 function _MessageListContainer() {
@@ -14,11 +15,17 @@ function _MessageListContainer() {
 
   const { width, borderRadius } = data || {};
 
+  const screenSize = useScreenSize();
+
   return (
     <div className="flex-1 flex flex-col min-h-screen items-center">
       <div
         className="flex-1 flex flex-col justify-end p-4 w-full gap-5"
-        style={{ width: width ? `${width}px` : "100%" }}
+        style={{
+          width:
+            width && screenSize.width > Number(width) ? `${width}px` : "100%",
+          margin: "4px 4px 4px 4px",
+        }}
       >
         {messages && messages.length > 0 && (
           <div

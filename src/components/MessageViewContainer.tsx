@@ -42,7 +42,7 @@ function MessageViewContainer() {
 
   return (
     <div
-      className="relative p-4"
+      className="relative p-4 max-w-screen"
       style={{
         backgroundColor: backgroundColor,
         color,
