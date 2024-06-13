@@ -15,8 +15,9 @@ function MessageInput() {
   const handleFocus = () => setBorderColor("rgba(62, 73, 174, 0.5)");
   const handleBlur = () => setBorderColor("rgba(62, 73, 174, 0.2)");
 
-  const { backgroundColor, textColor, width, borderRadius } =
-    useInputConfigContext();
+  const { data } = useInputConfigContext();
+
+  const { backgroundColor, color, width, borderRadius } = data || {};
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,7 +31,7 @@ function MessageInput() {
       <style>
         {`
           .custom-textarea::placeholder {
-            color: ${textColor};
+            color: ${color};
           }
         `}
       </style>
@@ -40,13 +41,13 @@ function MessageInput() {
           onClick={() => setShowMessages(true)}
           style={{
             backgroundColor,
-            color: textColor,
+            color,
             borderTopLeftRadius: "50%",
             borderTopRightRadius: "50%",
             padding: "4px",
           }}
         >
-          <ChevronDoubleUpIcon className="h-4 w-4" fill={textColor} />
+          <ChevronDoubleUpIcon className="h-4 w-4" fill={color} />
         </button>
       )}
       <form
@@ -59,7 +60,7 @@ function MessageInput() {
           style={{
             height: "56px",
             backgroundColor: backgroundColor || "#252222",
-            color: textColor,
+            color,
             borderRadius: `${borderRadius}px`,
             borderColor: borderColor,
           }}
@@ -77,7 +78,7 @@ function MessageInput() {
             autoFocus={false}
             style={{
               height: "56px",
-              color: textColor,
+              color,
               borderRadius: `${borderRadius}px`,
               backgroundColor: backgroundColor || "#252222",
             }}
@@ -93,7 +94,7 @@ function MessageInput() {
             className="m-1 outline-none duration-300 relative justify-center text-center items-center rounded-full cursor-pointer inline-flex text-sm h-8"
             style={{
               backgroundColor,
-              color: textColor,
+              color,
               borderRadius: "50%",
               width: "32px",
               height: "32px",
@@ -107,7 +108,7 @@ function MessageInput() {
         <div
           className="text-center w-fit items-center justify-center flex p-1"
           style={{
-            color: textColor,
+            color,
             fontSize: "9px",
             backgroundColor: backgroundColor || "#252222",
             margin: "1px auto",

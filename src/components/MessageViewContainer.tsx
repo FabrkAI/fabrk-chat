@@ -10,13 +10,9 @@ import MessageLoadingSkeleton from "./MessageLoadingSkeleton";
 function MessageViewContainer() {
   const [borderColor] = useState("rgba(62, 73, 174, 0.2)");
 
-  const {
-    backgroundColor,
-    textColor,
-    borderRadius,
-    setShowMessages,
-    showMessages,
-  } = useInputConfigContext();
+  const { data, setShowMessages, showMessages } = useInputConfigContext();
+
+  const { backgroundColor, color, borderRadius } = data || {};
 
   const { loading, messages } = useMessageContext();
 
@@ -49,7 +45,7 @@ function MessageViewContainer() {
       className="relative p-4"
       style={{
         backgroundColor: backgroundColor,
-        color: textColor,
+        color,
         borderRadius: `${borderRadius}px`,
         borderColor: borderColor,
       }}
@@ -57,11 +53,11 @@ function MessageViewContainer() {
       <button
         className="absolute top-1 right-1 "
         style={{
-          color: textColor,
+          color,
         }}
         onClick={() => setShowMessages(false)}
       >
-        <XMarkIcon className="h-6 w-6" color={textColor} />
+        <XMarkIcon className="h-6 w-6" color={color} />
       </button>
       {messages?.map((message, index) => {
         if (message.role === "user") {

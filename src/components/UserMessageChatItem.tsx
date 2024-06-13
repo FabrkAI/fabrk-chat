@@ -3,7 +3,9 @@ import { useInputConfigContext } from "../hooks/InputConfigContext";
 import { formatTimeStampToHumanReadableDateTimeSeconds } from "../utils/parseTimeStamp";
 
 function UserMessageChatItem({ message }: { message: SmsMessage }) {
-  const { backgroundColor, textColor, borderRadius } = useInputConfigContext();
+  const { data } = useInputConfigContext();
+
+  const { backgroundColor, color, borderRadius } = data || {};
 
   return (
     <div className="flex justify-end mr-10">
@@ -11,7 +13,7 @@ function UserMessageChatItem({ message }: { message: SmsMessage }) {
         className="p-2 rounded-lg max-w-lg"
         style={{
           backgroundColor,
-          color: textColor,
+          color,
           borderRadius: `${borderRadius}px`,
         }}
       >
@@ -19,7 +21,7 @@ function UserMessageChatItem({ message }: { message: SmsMessage }) {
 
         <p
           style={{
-            color: textColor,
+            color,
             fontSize: "9px",
           }}
         >

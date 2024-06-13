@@ -4,20 +4,22 @@ import { useInputConfigContext } from "../hooks/InputConfigContext";
 import { formatTimeStampToHumanReadableDateTimeSeconds } from "../utils/parseTimeStamp";
 
 function AssistantMessageChatItem({ message }: { message: SmsMessage }) {
-  const { textColor } = useInputConfigContext();
+  const { data } = useInputConfigContext();
+
+  const { color } = data || {};
 
   return (
     <div className="flex justify-start relative">
       <div
         className="text-white p-2 max-w-lg"
         style={{
-          color: textColor,
+          color,
         }}
       >
         <Markdown>{message.content}</Markdown>
         <p
           style={{
-            color: textColor,
+            color,
             fontSize: "9px",
           }}
         >
