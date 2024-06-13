@@ -119,7 +119,6 @@ function MessageInput() {
             <a
               href="https://fabrk.ai"
               style={{
-                color: "orange",
                 textDecoration: "underline",
                 fontWeight: "bold",
               }}
