@@ -3,14 +3,20 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { UseMutateFunction, useMutation } from "react-query";
 import { SessionRow } from "../api/session.type";
 import { createNewSession, getSessionById } from "../api/session.api";
+import { getCompanyIdFromUrl } from "../utils/stringManipulation";
 
 export const SessionContextWrapper = (props: any) => {
+  const url = window.location.pathname;
+
   const [sessionId, setSessionId] = useState<string>("");
+
+  const companySlug = getCompanyIdFromUrl(url);
+  const campaignName = url.split("/")[3];
 
   const { mutate: createSession, isLoading } = useMutation(createNewSession, {
     onSuccess: async (res) => {
       setSessionId(res.id);
-      localStorage.setItem("input_session_id", res.id);
+      localStorage.setItem(`${companySlug}-${campaignName}-session_id`, res.id);
     },
     onError(error: Error) {},
   });
@@ -24,7 +30,9 @@ export const SessionContextWrapper = (props: any) => {
 
   useEffect(() => {
     if (!sessionId) {
-      const foundSessionId = localStorage.getItem("input_session_id");
+      const foundSessionId = localStorage.getItem(
+        `${companySlug}-${campaignName}-session_id`
+      );
       if (foundSessionId) {
         setSessionId(foundSessionId);
       }

@@ -81,7 +81,7 @@ export function getNewSmsMessagesByLeadForFabrk({
 }
 
 export function sendMessage(values: CreateSmsMessage): Promise<any> {
-  const url = process.env.REACT_APP_API_URL + "/sms/send-test";
+  const url = process.env.REACT_APP_API_URL + "/sms/fabrk/create";
 
   const request = {
     method: "POST",
