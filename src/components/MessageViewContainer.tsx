@@ -27,7 +27,7 @@ function MessageViewContainer() {
       if (
         eventTarget.closest(".message-list") ||
         eventTarget.closest(".show-messages-button") ||
-        eventTarget.closest(".message-input")
+        eventTarget.closest(".custom-textarea")
       ) {
         return;
       } else if (showMessages) {
