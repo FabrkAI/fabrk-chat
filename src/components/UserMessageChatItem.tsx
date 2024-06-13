@@ -15,18 +15,12 @@ function UserMessageChatItem({ message }: { message: SmsMessage }) {
           borderRadius: `${borderRadius}px`,
         }}
       >
-        <p
-          style={{
-            fontFamily: "dm-mono-regular",
-          }}
-        >
-          {message.content}
-        </p>
+        <p>{message.content}</p>
 
         <p
-          className="text-xs"
           style={{
             color: textColor,
+            fontSize: "9px",
           }}
         >
           {formatTimeStampToHumanReadableDateTimeSeconds(message.created_at)}

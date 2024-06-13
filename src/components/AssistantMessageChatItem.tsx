@@ -16,9 +16,9 @@ function AssistantMessageChatItem({ message }: { message: SmsMessage }) {
       >
         <Markdown>{message.content}</Markdown>
         <p
-          className="text-xs"
           style={{
             color: textColor,
+            fontSize: "9px",
           }}
         >
           {formatTimeStampToHumanReadableDateTimeSeconds(message.created_at)}

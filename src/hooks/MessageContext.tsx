@@ -29,6 +29,7 @@ export const MessageContextWrapper = ({
   const { mutate: createMessage } = useMutation(sendMessage, {
     onMutate: async (variables) => {
       const now = new Date().toISOString();
+      setLoading(true);
       setMessageCreatedTime(now);
       const newMessage = {
         id: "0",
@@ -54,13 +55,11 @@ export const MessageContextWrapper = ({
         campaignId: campaign?.id || "",
         createdTime: messageCreatedTime,
       }),
-    enabled: loading,
+    enabled: loading && messageCreatedTime ? true : false,
     refetchInterval: 3000,
   });
 
   function handleCreateMessage(content: string) {
-    setLoading(true);
-
     createMessage({
       campaignId: campaign?.id as string,
       companyId: campaign?.company_id as string,
@@ -93,6 +92,7 @@ export const MessageContextWrapper = ({
     if (newMessage) {
       if (campaign && fabrkSession?.lead_id) {
         getMessages({ leadId: fabrkSession?.lead_id });
+        setLoading(false);
       }
     }
   }, [newMessage]);

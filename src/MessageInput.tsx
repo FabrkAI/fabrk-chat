@@ -22,6 +22,7 @@ function MessageInput() {
     e.preventDefault();
     handleCreateMessage(inputValue);
     setInputValue("");
+    setShowMessages(true);
   }
 
   return (
