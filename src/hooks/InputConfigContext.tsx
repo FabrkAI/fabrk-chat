@@ -23,9 +23,9 @@ export const InputConfigContextWrapper = ({
   });
 
   const { isLoading: placeholdersLoading, data: placeholders } = useQuery({
-    queryFn: () => getTestContextsByCampaign(campaign?.company_id as string),
+    queryFn: () => getTestContextsByCampaign(campaign?.id as string),
     queryKey: ["placeholders"],
-    enabled: campaign && campaign.company_id ? true : false,
+    enabled: campaign && campaign.id ? true : false,
   });
 
   const value = {
