@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
 import MessageInput from "../MessageInput";
-import { useCampaignContext } from "../hooks/CampaignContext";
 import {
   InputConfigContextWrapper,
   useInputConfigContext,
@@ -45,9 +44,8 @@ function _MessageListContainer() {
 }
 
 const MessageListContainer = () => {
-  const { campaign } = useCampaignContext();
   return (
-    <InputConfigContextWrapper companyId={campaign?.company_id as string}>
+    <InputConfigContextWrapper>
       <_MessageListContainer />
     </InputConfigContextWrapper>
   );

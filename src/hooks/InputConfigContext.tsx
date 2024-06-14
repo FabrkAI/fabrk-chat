@@ -3,27 +3,37 @@ import { createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
 import { getCssParamByCompany } from "../api/cssParam.api";
 import { CssParamRow } from "../api/cssParam.type";
+import { useCampaignContext } from "./CampaignContext";
+import { getTestContextsByCampaign } from "../api/testContext.api";
+import { TestContextRow } from "../api/testContext.type";
 
 export const InputConfigContextWrapper = ({
-  companyId,
   children,
 }: {
-  companyId: string;
   children: React.ReactNode;
 }) => {
   const [showMessages, setShowMessages] = useState(true);
 
+  const { campaign } = useCampaignContext();
+
   const { isLoading, data } = useQuery({
-    queryFn: () => getCssParamByCompany(companyId as string),
+    queryFn: () => getCssParamByCompany(campaign?.company_id as string),
     queryKey: ["cssParam"],
-    enabled: companyId ? true : false,
+    enabled: campaign && campaign.company_id ? true : false,
+  });
+
+  const { isLoading: placeholdersLoading, data: placeholders } = useQuery({
+    queryFn: () => getTestContextsByCampaign(campaign?.company_id as string),
+    queryKey: ["placeholders"],
+    enabled: campaign && campaign.company_id ? true : false,
   });
 
   const value = {
     data,
     showMessages,
     setShowMessages,
-    loading: isLoading,
+    loading: isLoading || placeholdersLoading,
+    placeholders,
   };
 
   return (
@@ -38,6 +48,7 @@ export const InputConfigContext = createContext({
   showMessages: true,
   setShowMessages: (value: boolean) => {},
   loading: true,
+  placeholders: {} as TestContextRow | undefined,
 });
 
 export const useInputConfigContext = () => useContext(InputConfigContext);

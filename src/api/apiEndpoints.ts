@@ -9,4 +9,5 @@ export enum ApiEndpoints {
   font = "/font",
   session = "/session",
   cssParam = "/css-param",
+  testContext = "/test-context",
 }

@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import { useMessageContext } from "./hooks/MessageContext";
 import { useInputConfigContext } from "./hooks/InputConfigContext";
 import { useScreenSize } from "./hooks/ScreenSizeContext";
+import useTypingPlaceholder from "./hooks/placeholderMarquee";
 
 function MessageInput() {
   const { handleCreateMessage } = useMessageContext();
-  const { showMessages, setShowMessages } = useInputConfigContext();
+  const { showMessages, setShowMessages, placeholders } =
+    useInputConfigContext();
 
   const [inputValue, setInputValue] = useState("");
   const [borderColor, setBorderColor] = useState("rgba(62, 73, 174, 0.2)");
@@ -26,6 +28,10 @@ function MessageInput() {
     setInputValue("");
     setShowMessages(true);
   }
+
+  const displayedPlaceholder = useTypingPlaceholder(
+    placeholders?.messages || ["Send Message..."]
+  );
 
   const screenSize = useScreenSize();
 
@@ -79,7 +85,7 @@ function MessageInput() {
           <textarea
             onChange={(e) => setInputValue(e.target.value)}
             value={inputValue}
-            placeholder="Send message..."
+            placeholder={displayedPlaceholder}
             className="outline-none border-none resize-none focus:outline-none focus:border-none p-2 w-full custom-textarea"
             autoComplete="off"
             autoFocus={false}
