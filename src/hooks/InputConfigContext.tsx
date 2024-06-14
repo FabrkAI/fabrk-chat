@@ -17,9 +17,9 @@ export const InputConfigContextWrapper = ({
   const { campaign } = useCampaignContext();
 
   const { isLoading, data } = useQuery({
-    queryFn: () => getCssParamByCompany(campaign?.company_id as string),
+    queryFn: () => getCssParamByCompany(campaign?.id as string),
     queryKey: ["cssParam"],
-    enabled: campaign && campaign.company_id ? true : false,
+    enabled: campaign && campaign.id ? true : false,
   });
 
   const { isLoading: placeholdersLoading, data: placeholders } = useQuery({

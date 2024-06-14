@@ -2,11 +2,11 @@ import { ApiEndpoints } from "./apiEndpoints";
 import { fetchData } from "./apiHelpers";
 import { CreateCssParam, CssParamRow, UpdateCssParam } from "./cssParam.type";
 
-export function getCssParamByCompany(companyId: string): Promise<CssParamRow> {
+export function getCssParamByCompany(campaignId: string): Promise<CssParamRow> {
   const url =
     process.env.REACT_APP_API_URL +
     ApiEndpoints.cssParam +
-    `/company/${companyId}`;
+    `/campaign/${campaignId}`;
 
   const request = {
     method: "GET",
