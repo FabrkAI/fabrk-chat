@@ -42,17 +42,23 @@ function MessageViewContainer() {
   useEffect(() => {
     // Send height to parent window after mount and when messages change
     const sendHeight = () => {
-      const height = containerRef.current?.offsetHeight;
-      window.parent.postMessage({ height }, "*"); // Use '*' for simplicity, specify parent origin in production
+      const h = containerRef.current?.offsetHeight || 0;
+      const height = h + 200;
+      window.parent.postMessage({ height }, "*");
+    };
+
+    const resetHeight = () => {
+      window.parent.postMessage({ height: 0 }, "*");
     };
 
     sendHeight();
-    window.addEventListener("resize", sendHeight); // Optionally adjust on window resize
+    window.addEventListener("resize", sendHeight);
 
     return () => {
-      window.removeEventListener("resize", sendHeight);
+      resetHeight();
+      window.removeEventListener("resize", resetHeight);
     };
-  }, [messages]);
+  }, [messages, showMessages]);
 
   useEffect(() => {
     if (messages && messages.length > 0) {

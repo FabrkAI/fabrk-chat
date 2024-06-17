@@ -13,7 +13,7 @@ import { useSessionContext } from "./SessionContext";
 export const CampaignContextWrapper = (props: any) => {
   const url = window.location.pathname;
 
-  const { createSession, fabrkSession } = useSessionContext();
+  const { createSession, fabrkSession, loading } = useSessionContext();
 
   const companySlug = getCompanyIdFromUrl(url);
 
@@ -37,7 +37,7 @@ export const CampaignContextWrapper = (props: any) => {
   });
 
   useEffect(() => {
-    if (!fabrkSession?.id && campaign?.id && !isLoading) {
+    if (!fabrkSession?.id && campaign?.id && !isLoading && !loading) {
       createSession({
         source: window.location.pathname,
         campaignId: campaign?.id,
