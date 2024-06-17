@@ -37,7 +37,7 @@ export const CampaignContextWrapper = (props: any) => {
   });
 
   useEffect(() => {
-    if (!fabrkSession?.id && campaign?.id) {
+    if (!fabrkSession?.id && campaign?.id && !isLoading) {
       createSession({
         source: window.location.pathname,
         campaignId: campaign?.id,

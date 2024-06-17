@@ -28,10 +28,10 @@ function _MessageListContainer() {
       >
         {messages && messages.length > 0 && (
           <div
-            className="flex flex-col-reverse overflow-y-auto max-h-[calc(100vh-150px)]"
+            className="flex flex-col-reverse overflow-y-auto max-h-screen"
             style={{
               borderRadius: `${borderRadius}px`,
-              marginBottom: "100px", // Ensure space for the input
+              marginBottom: "100px",
             }}
           >
             {showMessages && <MessageViewContainer />}

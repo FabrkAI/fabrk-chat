@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInputConfigContext } from "../hooks/InputConfigContext";
 import { useMessageContext } from "../hooks/MessageContext";
 import UserMessageChatItem from "./UserMessageChatItem";
@@ -16,17 +16,16 @@ function MessageViewContainer() {
 
   const { loading, messages } = useMessageContext();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const eventTarget = event.target as HTMLElement;
+  const containerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
       if (
-        eventTarget.closest(".message-list") ||
-        eventTarget.closest(".show-messages-button") ||
-        eventTarget.closest(".custom-textarea")
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node) &&
+        !event?.target?.closest(".show-messages-button") &&
+        !event?.target?.closest(".custom-textarea")
       ) {
-        return;
-      } else if (showMessages) {
         setShowMessages(false);
       }
     };
@@ -38,11 +37,33 @@ function MessageViewContainer() {
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [showMessages]);
+
+  useEffect(() => {
+    // Send height to parent window after mount and when messages change
+    const sendHeight = () => {
+      const height = containerRef.current?.offsetHeight;
+      window.parent.postMessage({ height }, "*"); // Use '*' for simplicity, specify parent origin in production
+    };
+
+    sendHeight();
+    window.addEventListener("resize", sendHeight); // Optionally adjust on window resize
+
+    return () => {
+      window.removeEventListener("resize", sendHeight);
+    };
+  }, [messages]);
+
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      setShowMessages(true);
+    }
+  }, [messages]);
 
   return (
     <div
-      className="relative p-4 max-w-screen"
+      ref={containerRef}
+      className="message-list p-4 max-w-screen relative"
       style={{
         backgroundColor: backgroundColor,
         color,

@@ -97,8 +97,6 @@ export const MessageContextWrapper = ({
     }
   }, [newMessage]);
 
-  console.log(messages);
-
   const value = {
     messages,
     handleCreateMessage,
