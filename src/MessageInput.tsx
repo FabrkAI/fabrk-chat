@@ -36,7 +36,10 @@ function MessageInput() {
   const screenSize = useScreenSize();
 
   return (
-    <div className="flex justify-center relative" style={{ zIndex: 15 }}>
+    <div
+      className="flex flex-col justify-center items-center relative"
+      style={{ zIndex: 15 }}
+    >
       <style>
         {`
           .custom-textarea::placeholder {
@@ -46,14 +49,14 @@ function MessageInput() {
       </style>
       {!showMessages && (
         <button
-          className="fixed bottom-28 left-1/2 transform -translate-x-1/2 show-messages-button"
+          className="show-messages-button text-center items-center justify-center"
           onClick={() => setShowMessages(true)}
           style={{
             backgroundColor,
             color,
             borderTopLeftRadius: "50%",
             borderTopRightRadius: "50%",
-            padding: "4px",
+            padding: "1px",
           }}
         >
           <ChevronDoubleUpIcon className="h-4 w-4" fill={color} />
@@ -61,10 +64,10 @@ function MessageInput() {
       )}
       <form
         onSubmit={handleSubmit}
-        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full sm:w-1/2 sm:left-1/2 sm:transform -translate-x-1/2"
         style={{
           width:
             width && screenSize.width > Number(width) ? `${width}px` : "100%",
+          height: "fit-content",
         }}
       >
         <div
@@ -75,7 +78,7 @@ function MessageInput() {
             color,
             borderRadius: `${borderRadius}px`,
             borderColor: borderColor,
-            margin: "4px 4px 4px 4px",
+            margin: "0px 4px 4px 4px",
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

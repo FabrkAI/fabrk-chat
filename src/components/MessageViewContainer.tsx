@@ -75,6 +75,7 @@ function MessageViewContainer() {
         color,
         borderRadius: `${borderRadius}px`,
         borderColor: borderColor,
+        height: "100%",
       }}
     >
       <button
