@@ -76,6 +76,7 @@ function MessageViewContainer() {
         borderRadius: `${borderRadius}px`,
         borderColor: borderColor,
         height: "100%",
+        overflowY: "auto",
       }}
     >
       <button
