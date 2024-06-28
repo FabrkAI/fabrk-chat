@@ -6,6 +6,7 @@ import {
 } from "../hooks/InputConfigContext";
 import { useMessageContext } from "../hooks/MessageContext";
 import { useScreenSize } from "../hooks/ScreenSizeContext";
+import { FileUploadContextWrapper } from "../hooks/FileUploadContext";
 import MessageViewContainer from "./MessageViewContainer";
 
 function _MessageListContainer() {
@@ -47,7 +48,9 @@ function _MessageListContainer() {
 const MessageListContainer = () => {
   return (
     <InputConfigContextWrapper>
-      <_MessageListContainer />
+      <FileUploadContextWrapper>
+        <_MessageListContainer />
+      </FileUploadContextWrapper>
     </InputConfigContextWrapper>
   );
 };

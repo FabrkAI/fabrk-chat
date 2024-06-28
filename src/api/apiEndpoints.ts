@@ -10,4 +10,5 @@ export enum ApiEndpoints {
   session = "/session",
   cssParam = "/css-param",
   testContext = "/test-context",
+  storage = "/storage",
 }

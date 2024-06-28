@@ -59,13 +59,14 @@ export const MessageContextWrapper = ({
     refetchInterval: 3000,
   });
 
-  function handleCreateMessage(content: string) {
+  function handleCreateMessage(content: string, fileStoreId?: string) {
     createMessage({
       campaignId: campaign?.id as string,
       companyId: campaign?.company_id as string,
       leadId: fabrkSession?.lead_id as string,
       message: content,
       source: window.location.href,
+      ...(fileStoreId && { fileStoreId }),
     });
   }
 
@@ -111,7 +112,7 @@ export const MessageContextWrapper = ({
 
 export const MessageContext = createContext({
   messages: {} as SmsMessage[] | undefined,
-  handleCreateMessage: {} as (content: string) => void,
+  handleCreateMessage: {} as (content: string, fileStoreId?: string) => void,
   loading: false,
   setMessages: {} as React.Dispatch<React.SetStateAction<SmsMessage[]>>,
 });

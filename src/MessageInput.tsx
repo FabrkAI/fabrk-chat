@@ -1,12 +1,34 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { ArrowRightIcon, ChevronDoubleUpIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
-import { useMessageContext } from "./hooks/MessageContext";
+import { Typography } from "@material-tailwind/react";
+import React, { useEffect, useState } from "react";
+import FileUploadInput from "./components/FileUploadInput";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { useCampaignContext } from "./hooks/CampaignContext";
+import { useFileUploadContext } from "./hooks/FileUploadContext";
 import { useInputConfigContext } from "./hooks/InputConfigContext";
+import { useMessageContext } from "./hooks/MessageContext";
 import { useScreenSize } from "./hooks/ScreenSizeContext";
 import useTypingPlaceholder from "./hooks/placeholderMarquee";
 
 function MessageInput() {
   const { handleCreateMessage } = useMessageContext();
+
+  const {
+    handleOpenFileSelect,
+    file,
+    hiddenFileInput,
+    handleChange,
+    uploadOneFile,
+    createdFileStore,
+    loading,
+  } = useFileUploadContext();
+
+  const { campaign } = useCampaignContext();
+
+  const [fileName, setFileName] = useState("");
+
   const { showMessages, setShowMessages, placeholders } =
     useInputConfigContext();
 
@@ -24,8 +46,9 @@ function MessageInput() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    handleCreateMessage(inputValue);
+    handleCreateMessage(inputValue, createdFileStore?.id);
     setInputValue("");
+    setFileName("");
     setShowMessages(true);
   }
 
@@ -34,6 +57,37 @@ function MessageInput() {
   );
 
   const screenSize = useScreenSize();
+
+  const fileTypes = [
+    ".csv",
+    ".xls",
+    ".xlsx",
+    ".pptx",
+    ".pdf",
+    ".docx",
+    ".doc",
+    ".txt",
+    ".md",
+    ".json",
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "webp",
+  ];
+
+  useEffect(() => {
+    if (file) {
+      setFileName(file.name);
+      uploadOneFile({
+        file,
+        additionalData: {
+          companyId: campaign?.company_id,
+          location: "images",
+        },
+      });
+    }
+  }, [file]);
 
   return (
     <div
@@ -47,7 +101,7 @@ function MessageInput() {
           }
         `}
       </style>
-      {!showMessages && (
+      {!showMessages && !loading && (
         <button
           className="show-messages-button text-center items-center justify-center"
           onClick={() => setShowMessages(true)}
@@ -61,6 +115,26 @@ function MessageInput() {
         >
           <ChevronDoubleUpIcon className="h-4 w-4" fill={color} />
         </button>
+      )}
+      {fileName && (
+        <div className="mb-2">
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <div
+              className="text-sm text-gray-600 p-1 w-fit px-2  "
+              style={{
+                color,
+                backgroundColor: backgroundColor || "#252222",
+                borderRadius: `${borderRadius}px`,
+                boxShadow: "0 8px 24px rgba(255, 140, 0, 0.6)",
+              }}
+            >
+              {/* @ts-ignore */}
+              <Typography>Uploaded file: {fileName}</Typography>
+            </div>
+          )}
+        </div>
       )}
       <form
         onSubmit={handleSubmit}
@@ -79,6 +153,7 @@ function MessageInput() {
             borderRadius: `${borderRadius}px`,
             borderColor: borderColor,
             margin: "0px 4px 4px 4px",
+            boxShadow: "0 8px 24px rgba(255, 140, 0, 0.6)",
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -88,10 +163,13 @@ function MessageInput() {
           <textarea
             onChange={(e) => setInputValue(e.target.value)}
             value={inputValue}
-            placeholder={displayedPlaceholder}
+            placeholder={
+              fileName && loading ? "Uploading file..." : displayedPlaceholder
+            }
             className="outline-none border-none resize-none focus:outline-none focus:border-none p-2 w-full custom-textarea"
             autoComplete="off"
             autoFocus={false}
+            disabled={loading}
             style={{
               height: "56px",
               color,
@@ -105,6 +183,24 @@ function MessageInput() {
               }
             }}
           />
+          <button
+            className="m-1 outline-none duration-300 relative justify-center text-center items-center rounded-full cursor-pointer  inline-flex text-sm h-8"
+            style={{
+              backgroundColor,
+              color,
+              borderRadius: "50%",
+              width: "32px",
+              height: "32px",
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              handleOpenFileSelect(e);
+            }}
+          >
+            <div className="flex items-center leading-none justify-center gap-xs">
+              <PlusCircleIcon className="h-6 w-6" />
+            </div>
+          </button>
           <button
             type="submit"
             className="m-1 outline-none duration-300 relative justify-center text-center items-center rounded-full cursor-pointer inline-flex text-sm h-8"
@@ -147,6 +243,12 @@ function MessageInput() {
           </p>
         </div>
       </form>
+      <FileUploadInput
+        handleChange={handleChange}
+        hiddenFileInput={hiddenFileInput}
+        accept={fileTypes.join(",")}
+        multiple={false}
+      />
     </div>
   );
 }

@@ -5,10 +5,8 @@ export type RequestOptions = {
 
 export type HeaderOptions = {
   method: string;
-  headers: {
+  headers?: {
     "Content-Type"?: string;
-    access_token?: string;
-    refresh_token?: string;
   };
   body?: any;
 };
@@ -36,14 +34,8 @@ export function setFileUploadOptions({
   body,
   method,
 }: RequestOptions): HeaderOptions {
-  const access_token = localStorage.getItem("access_token");
-  const refresh_token = localStorage.getItem("refresh_token");
   const request = {
     method,
-    headers: {
-      [access_token ? "access_token" : ""]: access_token,
-      [refresh_token ? "refresh_token" : ""]: refresh_token,
-    },
     [body ? "body" : ""]: body ? body : "",
   };
 

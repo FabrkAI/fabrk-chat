@@ -37,4 +37,5 @@ export type CreateSmsMessage = {
   companyId: string;
   mediaUrl?: string;
   threadId?: string;
+  fileStoreId?: string;
 };
