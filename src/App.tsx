@@ -3,16 +3,19 @@ import MessageListContainer from "./components/MessageListContainer";
 import { CampaignContextWrapper } from "./hooks/CampaignContext";
 import { MessageContextWrapper } from "./hooks/MessageContext";
 import { SessionContextWrapper } from "./hooks/SessionContext";
+import { EventStreamingWrapper } from "./hooks/StreamMessageContext";
 
 function App() {
   return (
-    <SessionContextWrapper>
-      <CampaignContextWrapper>
-        <MessageContextWrapper>
-          <MessageListContainer />
-        </MessageContextWrapper>
-      </CampaignContextWrapper>
-    </SessionContextWrapper>
+    <CampaignContextWrapper>
+      <SessionContextWrapper>
+        <EventStreamingWrapper>
+          <MessageContextWrapper>
+            <MessageListContainer />
+          </MessageContextWrapper>
+        </EventStreamingWrapper>
+      </SessionContextWrapper>
+    </CampaignContextWrapper>
   );
 }
 

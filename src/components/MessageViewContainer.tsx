@@ -6,15 +6,17 @@ import { useMessageContext } from "../hooks/MessageContext";
 import UserMessageChatItem from "./UserMessageChatItem";
 import AssistantMessageChatItem from "./AssistantMessageChatItem";
 import MessageLoadingSkeleton from "./MessageLoadingSkeleton";
+import { useEventStreaming } from "../hooks/StreamMessageContext";
 
 function MessageViewContainer() {
   const [borderColor] = useState("rgba(62, 73, 174, 0.2)");
 
-  const { data, setShowMessages, showMessages } = useInputConfigContext();
+  const { setShowMessages, showMessages } = useInputConfigContext();
 
-  const { backgroundColor, color, borderRadius } = data || {};
+  const { text, streaming } = useEventStreaming();
 
-  const { loading, messages } = useMessageContext();
+  const { loading, messages, newMessage, messageCreatedTime } =
+    useMessageContext();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -71,9 +73,6 @@ function MessageViewContainer() {
       ref={containerRef}
       className="message-list p-4 max-w-screen relative"
       style={{
-        backgroundColor: backgroundColor,
-        color,
-        borderRadius: `${borderRadius}px`,
         borderColor: borderColor,
         height: "100%",
         overflowY: "auto",
@@ -81,12 +80,9 @@ function MessageViewContainer() {
     >
       <button
         className="absolute top-1 right-1 "
-        style={{
-          color,
-        }}
         onClick={() => setShowMessages(false)}
       >
-        <XMarkIcon className="h-6 w-6" color={color} />
+        <XMarkIcon className="h-6 w-6" />
       </button>
       {messages?.map((message, index) => {
         if (message.role === "user") {
@@ -105,7 +101,19 @@ function MessageViewContainer() {
         }
         return null;
       })}
-      {loading && <MessageLoadingSkeleton />}
+      {(loading || streaming) && !text && <MessageLoadingSkeleton />}
+      {text && (
+        <div className="flex flex-row">
+          <AssistantMessageChatItem
+            message={{
+              id: newMessage?.id || "",
+              content: text,
+              created_at: messageCreatedTime || "",
+              role: "assistant",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

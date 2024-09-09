@@ -11,7 +11,7 @@ export function getCampaignByName({
 }): Promise<CampaignRow> {
   const url =
     process.env.REACT_APP_API_URL +
-    ApiEndpoints.campaign +
+    ApiEndpoints.agent +
     `/company/${companySlug}/name/${campaignName}`;
 
   const request = {

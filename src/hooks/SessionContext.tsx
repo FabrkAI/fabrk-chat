@@ -1,12 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useContext, useEffect, useState } from "react";
-import { UseMutateFunction, useMutation } from "react-query";
-import { SessionRow } from "../api/session.type";
+import { useMutation } from "react-query";
 import { createNewSession, getSessionById } from "../api/session.api";
+import { SessionRow } from "../api/session.type";
 import { getCompanyIdFromUrl } from "../utils/stringManipulation";
+import { useCampaignContext } from "./CampaignContext";
 
 export const SessionContextWrapper = (props: any) => {
   const url = window.location.pathname;
+
+  const { campaign } = useCampaignContext();
 
   const [sessionId, setSessionId] = useState<string>("");
 
@@ -35,9 +38,11 @@ export const SessionContextWrapper = (props: any) => {
       );
       if (foundSessionId) {
         setSessionId(foundSessionId);
+      } else {
+        createSession({ source: "fabrk", campaignId: campaign?.id as string });
       }
     }
-  }, []);
+  }, [campaign]);
 
   useEffect(() => {
     if (sessionId) {
@@ -45,7 +50,7 @@ export const SessionContextWrapper = (props: any) => {
     }
   }, [sessionId]);
 
-  const value = { fabrkSession, createSession, loading: isLoading };
+  const value = { fabrkSession, loading: isLoading };
 
   return (
     <SessionContext.Provider value={value}>
@@ -56,15 +61,7 @@ export const SessionContextWrapper = (props: any) => {
 
 export const SessionContext = createContext({
   fabrkSession: {} as SessionRow | undefined,
-  createSession: {} as UseMutateFunction<
-    SessionRow,
-    Error,
-    {
-      source: string;
-      campaignId: string;
-    },
-    unknown
-  >,
+
   loading: false,
 });
 

@@ -31,7 +31,7 @@ export type ConversationsOverview = {
 
 export type CreateSmsMessage = {
   leadId: string;
-  message: string;
+  content: string;
   campaignId: string;
   source: string;
   companyId: string;

@@ -9,12 +9,12 @@ import { useCampaignContext } from "./hooks/CampaignContext";
 import { useFileUploadContext } from "./hooks/FileUploadContext";
 import { useInputConfigContext } from "./hooks/InputConfigContext";
 import { useMessageContext } from "./hooks/MessageContext";
-import { useScreenSize } from "./hooks/ScreenSizeContext";
 import useTypingPlaceholder from "./hooks/placeholderMarquee";
+import { useEventStreaming } from "./hooks/StreamMessageContext";
 
 function MessageInput() {
-  const { handleCreateMessage } = useMessageContext();
-
+  const { handleCreateMessage, newMessage, getUpdatedMessages, setNewMessage } =
+    useMessageContext();
   const {
     handleOpenFileSelect,
     file,
@@ -33,30 +33,37 @@ function MessageInput() {
     useInputConfigContext();
 
   const [inputValue, setInputValue] = useState("");
-  const [borderColor, setBorderColor] = useState("rgba(62, 73, 174, 0.2)");
 
-  const handleMouseEnter = () => setBorderColor("rgba(62, 73, 174, 0.5)");
-  const handleMouseLeave = () => setBorderColor("rgba(62, 73, 174, 0.2)");
-  const handleFocus = () => setBorderColor("rgba(62, 73, 174, 0.5)");
-  const handleBlur = () => setBorderColor("rgba(62, 73, 174, 0.2)");
-
-  const { data } = useInputConfigContext();
-
-  const { backgroundColor, color, width, borderRadius } = data || {};
+  const { startStreaming, streaming } = useEventStreaming();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    handleCreateMessage(inputValue, createdFileStore?.id);
+    handleCreateMessage({
+      content: inputValue,
+      fileStoreId: createdFileStore?.id,
+    });
     setInputValue("");
     setFileName("");
-    setShowMessages(true);
   }
+
+  useEffect(() => {
+    if (newMessage) {
+      startStreaming(newMessage.id);
+      setNewMessage(undefined);
+    }
+  }, [newMessage]);
+
+  useEffect(() => {
+    if (!streaming && !newMessage) {
+      setTimeout(() => {
+        getUpdatedMessages();
+      }, 2000);
+    }
+  }, [streaming]);
 
   const displayedPlaceholder = useTypingPlaceholder(
     placeholders?.messages || ["Send Message..."]
   );
-
-  const screenSize = useScreenSize();
 
   const fileTypes = [
     ".csv",
@@ -91,29 +98,20 @@ function MessageInput() {
 
   return (
     <div
-      className="flex flex-col justify-center items-center relative"
+      className="custom-textarea flex flex-col justify-center items-center relative "
       style={{ zIndex: 15 }}
     >
-      <style>
-        {`
-          .custom-textarea::placeholder {
-            color: ${color};
-          }
-        `}
-      </style>
       {!showMessages && !loading && (
         <button
           className="show-messages-button text-center items-center justify-center"
           onClick={() => setShowMessages(true)}
           style={{
-            backgroundColor,
-            color,
             borderTopLeftRadius: "50%",
             borderTopRightRadius: "50%",
             padding: "1px",
           }}
         >
-          <ChevronDoubleUpIcon className="h-4 w-4" fill={color} />
+          <ChevronDoubleUpIcon className="h-4 w-4" />
         </button>
       )}
       {fileName && (
@@ -124,9 +122,6 @@ function MessageInput() {
             <div
               className="text-sm text-gray-600 p-1 w-fit px-2  "
               style={{
-                color,
-                backgroundColor: backgroundColor || "#252222",
-                borderRadius: `${borderRadius}px`,
                 boxShadow: "0 8px 24px rgba(255, 140, 0, 0.6)",
               }}
             >
@@ -136,95 +131,47 @@ function MessageInput() {
           )}
         </div>
       )}
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          width:
-            width && screenSize.width > Number(width) ? `${width}px` : "100%",
-          height: "fit-content",
-        }}
-      >
-        <div
-          className={`flex flex-row items-center overflow-auto max-h-[45vh] outline-none ${borderRadius} shadow-lg`}
-          style={{
-            height: "56px",
-            backgroundColor: backgroundColor || "#252222",
-            color,
-            borderRadius: `${borderRadius}px`,
-            borderColor: borderColor,
-            margin: "0px 4px 4px 4px",
-            boxShadow: "0 8px 24px rgba(255, 140, 0, 0.6)",
-          }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        >
+      <form onSubmit={handleSubmit}>
+        <div className="group flex flex-row items-center rounded-md border-2 border-skin-muted shadow-sm focus-within:border-2 focus-within:border-skin-accent p-2 max-h-[45vh] min-w-[600px] w-full ">
           <textarea
-            onChange={(e) => setInputValue(e.target.value)}
             value={inputValue}
-            placeholder={
-              fileName && loading ? "Uploading file..." : displayedPlaceholder
-            }
-            className="outline-none border-none resize-none focus:outline-none focus:border-none p-2 w-full custom-textarea"
-            autoComplete="off"
-            autoFocus={false}
-            disabled={loading}
-            style={{
-              height: "56px",
-              color,
-              borderRadius: `${borderRadius}px`,
-              backgroundColor: backgroundColor || "#252222",
-            }}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder={displayedPlaceholder}
+            className="block w-full resize-none rounded-none rounded-l-md border-0 bg-skin-hover py-1.5 text-skin-base shadow-sm outline-none placeholder:text-skin-muted focus:text-skin-base focus:ring-0 sm:text-sm"
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === "Enter" && handleSubmit) {
                 e.preventDefault();
                 handleSubmit(e as any);
               }
             }}
           />
+
           <button
-            className="m-1 outline-none duration-300 relative justify-center text-center items-center rounded-full cursor-pointer  inline-flex text-sm h-8"
-            style={{
-              backgroundColor,
-              color,
-              borderRadius: "50%",
-              width: "32px",
-              height: "32px",
-            }}
+            type="button"
+            className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md bg-skin-hover px-2 py-2 text-sm font-semibold text-skin-base shadow-sm ring-inset hover:bg-skin-hover"
             onClick={(e) => {
               e.preventDefault();
               handleOpenFileSelect(e);
             }}
           >
-            <div className="flex items-center leading-none justify-center gap-xs">
-              <PlusCircleIcon className="h-6 w-6" />
-            </div>
+            <PlusCircleIcon className="h-6 w-6 text-skin-muted" />
           </button>
           <button
-            type="submit"
-            className="m-1 outline-none duration-300 relative justify-center text-center items-center rounded-full cursor-pointer inline-flex text-sm h-8"
-            style={{
-              backgroundColor,
-              color,
-              borderRadius: "50%",
-              width: "32px",
-              height: "32px",
+            type="button"
+            className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md bg-skin-hover px-2 py-2 text-sm font-semibold text-skin-base shadow-sm ring-inset hover:bg-skin-hover"
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmit(e as any);
             }}
           >
-            <div className="flex items-center leading-none justify-center gap-xs">
-              <ArrowRightIcon className="h-4 w-4" />
-            </div>
+            <ArrowRightIcon className="h-6 w-6 rounded-full text-skin-muted" />
           </button>
         </div>
         <div
           className="text-center w-fit items-center justify-center flex p-1"
           style={{
-            color,
             fontSize: "9px",
-            backgroundColor: backgroundColor || "#252222",
             margin: "1px auto",
-            borderRadius: `${borderRadius}px`,
           }}
         >
           <p>

@@ -1,78 +1,72 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 
-import {
-  getNewSmsMessagesByLeadForFabrk,
-  getSmsMessagesByLead,
-  sendMessage,
-} from "../api/sms.api";
+import { createNewMessage, getSmsMessagesByLead } from "../api/sms.api";
 import { SmsMessage } from "../api/sms.type";
 import { useCampaignContext } from "./CampaignContext";
 import { useSessionContext } from "./SessionContext";
+import { useEventStreaming } from "./StreamMessageContext";
 
-export const MessageContextWrapper = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const MessageContextWrapper = (props: any) => {
+  const { fabrkSession } = useSessionContext();
   const { campaign } = useCampaignContext();
 
-  const { fabrkSession } = useSessionContext();
+  const [threadId, setThreadId] = useState<string | undefined>();
+
+  const [newThread, setNewThread] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
   const [messages, setMessages] = useState<SmsMessage[]>([]);
+  const [newMessage, setNewMessage] = useState<SmsMessage | undefined>();
 
   const [messageCreatedTime, setMessageCreatedTime] = useState<string | null>();
 
-  const { mutate: createMessage } = useMutation(sendMessage, {
-    onMutate: async (variables) => {
-      const now = new Date().toISOString();
-      setLoading(true);
-      setMessageCreatedTime(now);
-      const newMessage = {
-        id: "0",
-        leadId: variables.leadId,
-        created_at: now,
-        updated_at: now,
-        content: variables.message,
-        role: "user",
-        thread_id: variables.threadId,
-        campaign_id: variables.campaignId,
-      } as SmsMessage;
-      setMessages([...messages, newMessage]);
+  const { setText } = useEventStreaming();
+
+  const { mutate: createMessage, reset } = useMutation(createNewMessage, {
+    onSuccess: async (res) => {
+      setNewMessage(res);
+      if (messages) {
+        setMessages((prev) => [...prev, res]);
+      } else {
+        setMessages([res]);
+      }
     },
-
-    onError(error: Error) {},
   });
 
-  const { data: newMessage } = useQuery({
-    queryKey: "newMessages",
-    queryFn: () =>
-      getNewSmsMessagesByLeadForFabrk({
-        leadId: fabrkSession?.lead_id || "",
-        campaignId: campaign?.id || "",
-        createdTime: messageCreatedTime,
-      }),
-    enabled: loading && messageCreatedTime ? true : false,
-    refetchInterval: 3000,
-  });
+  function handleCreateMessage({
+    content,
+    fileStoreId,
+    actionId,
+  }: {
+    content: string;
+    fileStoreId?: string;
+    actionId?: string;
+  }) {
+    setLoading(true);
+    if (!fabrkSession) {
+      setLoading(false);
+      return;
+    }
 
-  function handleCreateMessage(content: string, fileStoreId?: string) {
     createMessage({
       campaignId: campaign?.id as string,
       companyId: campaign?.company_id as string,
-      leadId: fabrkSession?.lead_id as string,
-      message: content,
-      source: window.location.href,
+      leadId: fabrkSession.lead_id as string,
+      content,
+      source: "fabrk",
+      ...(threadId && !newThread && { threadId }),
       ...(fileStoreId && { fileStoreId }),
+      ...(actionId && { actionId }),
     });
   }
 
   const { mutate: getMessages } = useMutation(getSmsMessagesByLead, {
     onSuccess: async (res) => {
       setMessages(res);
+      setText("");
     },
     onError(error: Error) {
       console.log(error);
@@ -83,38 +77,64 @@ export const MessageContextWrapper = ({
     },
   });
 
-  useEffect(() => {
-    if (fabrkSession?.lead_id) {
-      getMessages({ leadId: fabrkSession?.lead_id });
+  function getUpdatedMessages() {
+    if (fabrkSession) {
+      getMessages({ leadId: fabrkSession.lead_id as string });
     }
-  }, [fabrkSession]);
+  }
 
   useEffect(() => {
-    if (newMessage) {
-      if (campaign && fabrkSession?.lead_id) {
-        getMessages({ leadId: fabrkSession?.lead_id });
-        setLoading(false);
-      }
+    if (fabrkSession && fabrkSession.lead_id) {
+      getUpdatedMessages();
     }
-  }, [newMessage]);
+  }, [fabrkSession]);
 
   const value = {
     messages,
     handleCreateMessage,
     loading,
     setMessages,
+    setNewThread,
+    setThreadId,
+    threadId,
+    newMessage,
+    messageCreatedTime,
+    reset,
+    getUpdatedMessages,
+    setNewMessage,
   };
 
   return (
-    <MessageContext.Provider value={value}>{children}</MessageContext.Provider>
+    <MessageContext.Provider value={value}>
+      {props.children}
+    </MessageContext.Provider>
   );
 };
 
 export const MessageContext = createContext({
   messages: {} as SmsMessage[] | undefined,
-  handleCreateMessage: {} as (content: string, fileStoreId?: string) => void,
+  handleCreateMessage: {} as ({
+    content,
+    fileStoreId,
+    actionId,
+  }: {
+    content: string;
+    fileStoreId?: string;
+    actionId?: string;
+  }) => void,
   loading: false,
   setMessages: {} as React.Dispatch<React.SetStateAction<SmsMessage[]>>,
+  setNewThread: {} as React.Dispatch<React.SetStateAction<boolean>>,
+  setThreadId: {} as React.Dispatch<React.SetStateAction<string | undefined>>,
+  threadId: "" as string | undefined,
+
+  messageCreatedTime: "" as string | null | undefined,
+  newMessage: {} as SmsMessage | undefined,
+  reset: {} as () => void,
+  getUpdatedMessages: {} as () => void,
+  setNewMessage: {} as React.Dispatch<
+    React.SetStateAction<SmsMessage | undefined>
+  >,
 });
 
 export const useMessageContext = () => useContext(MessageContext);

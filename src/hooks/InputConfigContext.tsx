@@ -1,11 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
-import { getCssParamByCompany } from "../api/cssParam.api";
-import { CssParamRow } from "../api/cssParam.type";
-import { useCampaignContext } from "./CampaignContext";
 import { getTestContextsByCampaign } from "../api/testContext.api";
 import { TestContextRow } from "../api/testContext.type";
+import { useCampaignContext } from "./CampaignContext";
 
 export const InputConfigContextWrapper = ({
   children,
@@ -16,12 +14,6 @@ export const InputConfigContextWrapper = ({
 
   const { campaign } = useCampaignContext();
 
-  const { isLoading, data } = useQuery({
-    queryFn: () => getCssParamByCompany(campaign?.id as string),
-    queryKey: ["cssParam"],
-    enabled: campaign && campaign.id ? true : false,
-  });
-
   const { isLoading: placeholdersLoading, data: placeholders } = useQuery({
     queryFn: () => getTestContextsByCampaign(campaign?.id as string),
     queryKey: ["placeholders"],
@@ -29,10 +21,9 @@ export const InputConfigContextWrapper = ({
   });
 
   const value = {
-    data,
     showMessages,
     setShowMessages,
-    loading: isLoading || placeholdersLoading,
+    loading: placeholdersLoading,
     placeholders,
   };
 
@@ -44,7 +35,6 @@ export const InputConfigContextWrapper = ({
 };
 
 export const InputConfigContext = createContext({
-  data: {} as CssParamRow | undefined,
   showMessages: true,
   setShowMessages: (value: boolean) => {},
   loading: true,

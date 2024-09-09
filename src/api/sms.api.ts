@@ -80,8 +80,8 @@ export function getNewSmsMessagesByLeadForFabrk({
   return fetchData<SmsMessage>(url, request);
 }
 
-export function sendMessage(values: CreateSmsMessage): Promise<any> {
-  const url = process.env.REACT_APP_API_URL + "/sms/fabrk/create";
+export function createNewMessage(values: CreateSmsMessage): Promise<any> {
+  const url = process.env.REACT_APP_API_URL + "/sms/create";
 
   const request = {
     method: "POST",
@@ -92,7 +92,7 @@ export function sendMessage(values: CreateSmsMessage): Promise<any> {
     body: JSON.stringify({ ...values }),
   };
 
-  return fetch(request.url, request);
+  return fetchData(url, request);
 }
 
 export function sendManualSms({
