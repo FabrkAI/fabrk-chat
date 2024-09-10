@@ -98,7 +98,7 @@ function MessageInput() {
 
   return (
     <div
-      className="custom-textarea flex flex-col justify-center items-center relative "
+      className="custom-textarea flex flex-col justify-center items-center relative border-1 "
       style={{ zIndex: 15 }}
     >
       {!showMessages && !loading && (
@@ -137,7 +137,7 @@ function MessageInput() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder={displayedPlaceholder}
-            className="block w-full resize-none rounded-none rounded-l-md border-0 bg-skin-hover py-1.5 text-skin-base shadow-sm outline-none placeholder:text-skin-muted focus:text-skin-base focus:ring-0 sm:text-sm"
+            className="block w-full resize-none rounded-none rounded-l-md border-0 bg-skin-hover py-1.5 text-skin-base  outline-none placeholder:text-skin-muted focus:text-skin-base focus:ring-0 sm:text-sm"
             onKeyDown={(e) => {
               if (e.key === "Enter" && handleSubmit) {
                 e.preventDefault();
@@ -148,7 +148,7 @@ function MessageInput() {
 
           <button
             type="button"
-            className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md bg-skin-hover px-2 py-2 text-sm font-semibold text-skin-base shadow-sm ring-inset hover:bg-skin-hover"
+            className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md bg-skin-hover px-2 py-2 text-sm font-semibold text-skin-base ring-inset hover:bg-skin-hover"
             onClick={(e) => {
               e.preventDefault();
               handleOpenFileSelect(e);
@@ -158,7 +158,7 @@ function MessageInput() {
           </button>
           <button
             type="button"
-            className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md bg-skin-hover px-2 py-2 text-sm font-semibold text-skin-base shadow-sm ring-inset hover:bg-skin-hover"
+            className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md bg-skin-hover px-2 py-2 text-sm font-semibold text-skin-base  ring-inset hover:bg-skin-hover"
             onClick={(e) => {
               e.preventDefault();
               handleSubmit(e as any);

@@ -3,7 +3,7 @@ import { formatTimeStampToHumanReadableDateTimeSeconds } from "../utils/parseTim
 
 function UserMessageChatItem({ message }: { message: SmsMessage }) {
   return (
-    <div className="flex justify-end mr-10">
+    <div className="flex justify-end mr-10 p-1">
       <div className="p-2 rounded-lg max-w-lg bg-slate-200">
         <p>{message.content}</p>
 

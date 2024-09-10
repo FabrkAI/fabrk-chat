@@ -1,16 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useInputConfigContext } from "../hooks/InputConfigContext";
 import { useMessageContext } from "../hooks/MessageContext";
-import UserMessageChatItem from "./UserMessageChatItem";
+import { useEventStreaming } from "../hooks/StreamMessageContext";
 import AssistantMessageChatItem from "./AssistantMessageChatItem";
 import MessageLoadingSkeleton from "./MessageLoadingSkeleton";
-import { useEventStreaming } from "../hooks/StreamMessageContext";
+import UserMessageChatItem from "./UserMessageChatItem";
 
 function MessageViewContainer() {
-  const [borderColor] = useState("rgba(62, 73, 174, 0.2)");
-
   const { setShowMessages, showMessages } = useInputConfigContext();
 
   const { text, streaming } = useEventStreaming();
@@ -71,9 +69,8 @@ function MessageViewContainer() {
   return (
     <div
       ref={containerRef}
-      className="message-list p-4 max-w-screen relative"
+      className="message-list p-4 relative rounded-lg border-2 border-gray-200"
       style={{
-        borderColor: borderColor,
         height: "100%",
         overflowY: "auto",
       }}

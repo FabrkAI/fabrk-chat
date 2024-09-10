@@ -13,11 +13,11 @@ function _MessageListContainer() {
   const { showMessages, loading } = useInputConfigContext();
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen items-center w-full">
-      <div className="flex-1 flex flex-col justify-end p-4 w-full gap-5">
+    <div className="flex-1 flex flex-col min-h-screen  w-full">
+      <div className="flex-1 flex flex-col justify-end p-4 w-full gap-5 items-center">
         {messages && messages.length > 0 && (
           <div
-            className="flex flex-col-reverse  max-h-screen"
+            className="flex flex-col-reverse max-h-screen max-w-[1200px] w-full"
             style={{
               height: "100%",
               overflowY: "visible",
