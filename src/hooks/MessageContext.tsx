@@ -91,6 +91,12 @@ export const MessageContextWrapper = (props: any) => {
     }
   }, [fabrkSession]);
 
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      setShowMessages(true);
+    }
+  }, [messages]);
+
   const value = {
     messages,
     handleCreateMessage,
