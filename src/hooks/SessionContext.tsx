@@ -4,22 +4,22 @@ import { useMutation } from "react-query";
 import { createNewSession, getSessionById } from "../api/session.api";
 import { SessionRow } from "../api/session.type";
 import { getCompanyIdFromUrl } from "../utils/stringManipulation";
-import { useCampaignContext } from "./CampaignContext";
+import { useAgentContext } from "./AgentContext";
 
 export const SessionContextWrapper = (props: any) => {
   const url = window.location.pathname;
 
-  const { campaign } = useCampaignContext();
+  const { agent } = useAgentContext();
 
   const [sessionId, setSessionId] = useState<string>("");
 
   const companySlug = getCompanyIdFromUrl(url);
-  const campaignName = url.split("/")[3];
+  const agentName = url.split("/")[3];
 
   const { mutate: createSession, isLoading } = useMutation(createNewSession, {
     onSuccess: async (res) => {
       setSessionId(res.id);
-      localStorage.setItem(`${companySlug}-${campaignName}-session_id`, res.id);
+      localStorage.setItem(`${companySlug}-${agentName}-session_id`, res.id);
     },
     onError(error: Error) {},
   });
@@ -34,15 +34,15 @@ export const SessionContextWrapper = (props: any) => {
   useEffect(() => {
     if (!sessionId) {
       const foundSessionId = localStorage.getItem(
-        `${companySlug}-${campaignName}-session_id`
+        `${companySlug}-${agentName}-session_id`
       );
       if (foundSessionId) {
         setSessionId(foundSessionId);
       } else {
-        createSession({ source: "fabrk", campaignId: campaign?.id as string });
+        createSession({ source: "fabrk", agentId: agent?.id as string });
       }
     }
-  }, [campaign]);
+  }, [agent]);
 
   useEffect(() => {
     if (sessionId) {

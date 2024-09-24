@@ -32,7 +32,7 @@ export type ConversationsOverview = {
 export type CreateSmsMessage = {
   leadId: string;
   content: string;
-  campaignId: string;
+  agentId: string;
   source: string;
   companyId: string;
   mediaUrl?: string;

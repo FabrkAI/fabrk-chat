@@ -2,31 +2,31 @@
 import { createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
 
-import { getCampaignByName } from "../api/campaign.api";
-import { CampaignRow } from "../api/campaign.type";
+import { getAgentByName } from "../api/agent.api";
+import { AgentRow } from "../api/agent.type";
 import {
   getCompanyIdFromUrl,
   replaceHyphenWithSpace,
 } from "../utils/stringManipulation";
 
-export const CampaignContextWrapper = (props: any) => {
+export const AgentContextWrapper = (props: any) => {
   const url = window.location.pathname;
 
   const companySlug = getCompanyIdFromUrl(url);
 
-  const campaignName = url.split("/")[3];
+  const agentName = url.split("/")[3];
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [globalLoading, setGlobalLoading] = useState(false);
 
-  const { data: campaign, isLoading } = useQuery({
+  const { data: agent, isLoading } = useQuery({
     queryFn: () =>
-      getCampaignByName({
+      getAgentByName({
         companySlug: companySlug as string,
-        campaignName: replaceHyphenWithSpace(campaignName) as string,
+        agentName: replaceHyphenWithSpace(agentName) as string,
       }),
-    queryKey: ["campaign"],
+    queryKey: ["agent", companySlug, agentName],
     enabled: true,
     onSettled: () => {
       setGlobalLoading(false);
@@ -38,7 +38,7 @@ export const CampaignContextWrapper = (props: any) => {
     setGlobalLoading,
     errorMessage,
     setErrorMessage,
-    campaign,
+    agent,
   };
 
   return (
@@ -53,7 +53,7 @@ export const CampaignContext = createContext({
   setGlobalLoading: {} as (loading: boolean) => void,
   errorMessage: "",
   setErrorMessage: {} as (message: string) => void,
-  campaign: {} as CampaignRow | undefined,
+  agent: {} as AgentRow | undefined,
 });
 
-export const useCampaignContext = () => useContext(CampaignContext);
+export const useAgentContext = () => useContext(CampaignContext);

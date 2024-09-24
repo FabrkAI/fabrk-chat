@@ -5,16 +5,22 @@ import { Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import FileUploadInput from "./components/FileUploadInput";
 import LoadingSpinner from "./components/LoadingSpinner";
-import { useCampaignContext } from "./hooks/CampaignContext";
+import { useAgentContext } from "./hooks/AgentContext";
 import { useFileUploadContext } from "./hooks/FileUploadContext";
-import { useInputConfigContext } from "./hooks/InputConfigContext";
 import { useMessageContext } from "./hooks/MessageContext";
 import useTypingPlaceholder from "./hooks/placeholderMarquee";
 import { useEventStreaming } from "./hooks/StreamMessageContext";
 
 function MessageInput() {
-  const { handleCreateMessage, newMessage, getUpdatedMessages, setNewMessage } =
-    useMessageContext();
+  const {
+    handleCreateMessage,
+    newMessage,
+    getUpdatedMessages,
+    setNewMessage,
+    setShowMessages,
+    showMessages,
+  } = useMessageContext();
+
   const {
     handleOpenFileSelect,
     file,
@@ -25,12 +31,9 @@ function MessageInput() {
     loading,
   } = useFileUploadContext();
 
-  const { campaign } = useCampaignContext();
+  const { agent: campaign } = useAgentContext();
 
   const [fileName, setFileName] = useState("");
-
-  const { showMessages, setShowMessages, placeholders } =
-    useInputConfigContext();
 
   const [inputValue, setInputValue] = useState("");
 
@@ -61,9 +64,7 @@ function MessageInput() {
     }
   }, [streaming]);
 
-  const displayedPlaceholder = useTypingPlaceholder(
-    placeholders?.messages || ["Send Message..."]
-  );
+  const displayedPlaceholder = useTypingPlaceholder(["Send Message..."]);
 
   const fileTypes = [
     ".csv",

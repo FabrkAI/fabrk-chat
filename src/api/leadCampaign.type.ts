@@ -1,5 +1,5 @@
 import { LeadRow } from "../api/lead.type";
-import { CampaignRow } from "./campaign.type";
+import { AgentRow } from "./agent.type";
 
 export type LeadCampaignsByCompany = {
   signup_date: string;
@@ -18,12 +18,12 @@ export type LeadCampaignRow = {
   user_message_count: number;
   status: string;
   assistant_message_count: number;
-  campaign?: CampaignRow;
+  campaign?: AgentRow;
   company_id: string;
 };
 
 export type LeadCampaignWithRelations = LeadCampaignRow & {
-  campaign: CampaignRow;
+  campaign: AgentRow;
 };
 
 export type LeadCampaignsWithPageAndCount = {

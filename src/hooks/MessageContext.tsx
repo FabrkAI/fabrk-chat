@@ -4,13 +4,15 @@ import { useMutation } from "react-query";
 
 import { createNewMessage, getSmsMessagesByLead } from "../api/sms.api";
 import { SmsMessage } from "../api/sms.type";
-import { useCampaignContext } from "./CampaignContext";
+import { useAgentContext } from "./AgentContext";
 import { useSessionContext } from "./SessionContext";
 import { useEventStreaming } from "./StreamMessageContext";
 
 export const MessageContextWrapper = (props: any) => {
   const { fabrkSession } = useSessionContext();
-  const { campaign } = useCampaignContext();
+  const { agent } = useAgentContext();
+
+  const [showMessages, setShowMessages] = useState(false);
 
   const [threadId, setThreadId] = useState<string | undefined>();
 
@@ -52,8 +54,8 @@ export const MessageContextWrapper = (props: any) => {
     }
 
     createMessage({
-      campaignId: campaign?.id as string,
-      companyId: campaign?.company_id as string,
+      agentId: agent?.id as string,
+      companyId: agent?.company_id as string,
       leadId: fabrkSession.lead_id as string,
       content,
       source: "fabrk",
@@ -102,6 +104,8 @@ export const MessageContextWrapper = (props: any) => {
     reset,
     getUpdatedMessages,
     setNewMessage,
+    showMessages,
+    setShowMessages,
   };
 
   return (
@@ -135,6 +139,8 @@ export const MessageContext = createContext({
   setNewMessage: {} as React.Dispatch<
     React.SetStateAction<SmsMessage | undefined>
   >,
+  showMessages: false,
+  setShowMessages: {} as React.Dispatch<React.SetStateAction<boolean>>,
 });
 
 export const useMessageContext = () => useContext(MessageContext);

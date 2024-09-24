@@ -1,18 +1,18 @@
 import { ApiEndpoints } from "./apiEndpoints";
 import { fetchData } from "./apiHelpers";
-import { CampaignRow } from "./campaign.type";
+import { AgentRow } from "./agent.type";
 
-export function getCampaignByName({
+export function getAgentByName({
   companySlug,
-  campaignName,
+  agentName,
 }: {
   companySlug: string;
-  campaignName: string;
-}): Promise<CampaignRow> {
+  agentName: string;
+}): Promise<AgentRow> {
   const url =
     process.env.REACT_APP_API_URL +
     ApiEndpoints.agent +
-    `/company/${companySlug}/name/${campaignName}`;
+    `/company/${companySlug}/name/${agentName}`;
 
   const request = {
     method: "GET",
@@ -21,5 +21,5 @@ export function getCampaignByName({
     },
   };
 
-  return fetchData<CampaignRow>(url, request);
+  return fetchData<AgentRow>(url, request);
 }

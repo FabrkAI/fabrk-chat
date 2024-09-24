@@ -1,6 +1,6 @@
 export type DeliveryMethods = "sms" | "email" | "email_sms";
 
-export type CampaignRow = {
+export type AgentRow = {
   default?: boolean;
   id: string;
   created_at: string;
@@ -29,12 +29,12 @@ export type CampaignRow = {
   delivery_method?: DeliveryMethods;
 };
 
-export type CampaignInsert = {
+export type AgentInsert = {
   lead_id: string;
   company_id: string;
 };
 
-export type CampaignUpdate = Partial<CampaignInsert> & {
+export type AgentUpdate = Partial<AgentInsert> & {
   id: string;
   name?: string;
   created_at?: string;

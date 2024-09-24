@@ -1,16 +1,12 @@
 /* eslint-disable react/jsx-pascal-case */
 import MessageInput from "../MessageInput";
 import { FileUploadContextWrapper } from "../hooks/FileUploadContext";
-import {
-  InputConfigContextWrapper,
-  useInputConfigContext,
-} from "../hooks/InputConfigContext";
+
 import { useMessageContext } from "../hooks/MessageContext";
 import MessageViewContainer from "./MessageViewContainer";
 
 function _MessageListContainer() {
-  const { messages } = useMessageContext();
-  const { showMessages, loading } = useInputConfigContext();
+  const { messages, showMessages } = useMessageContext();
 
   return (
     <div className="flex-1 flex flex-col min-h-screen  w-full">
@@ -26,7 +22,7 @@ function _MessageListContainer() {
             {showMessages && <MessageViewContainer />}
           </div>
         )}
-        {!loading && <MessageInput />}
+        <MessageInput />
       </div>
     </div>
   );
@@ -34,11 +30,9 @@ function _MessageListContainer() {
 
 const MessageListContainer = () => {
   return (
-    <InputConfigContextWrapper>
-      <FileUploadContextWrapper>
-        <_MessageListContainer />
-      </FileUploadContextWrapper>
-    </InputConfigContextWrapper>
+    <FileUploadContextWrapper>
+      <_MessageListContainer />
+    </FileUploadContextWrapper>
   );
 };
 

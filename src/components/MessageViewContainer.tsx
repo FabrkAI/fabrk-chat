@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
-import { useInputConfigContext } from "../hooks/InputConfigContext";
 import { useMessageContext } from "../hooks/MessageContext";
 import { useEventStreaming } from "../hooks/StreamMessageContext";
 import AssistantMessageChatItem from "./AssistantMessageChatItem";
@@ -9,12 +8,16 @@ import MessageLoadingSkeleton from "./MessageLoadingSkeleton";
 import UserMessageChatItem from "./UserMessageChatItem";
 
 function MessageViewContainer() {
-  const { setShowMessages, showMessages } = useInputConfigContext();
-
   const { text, streaming } = useEventStreaming();
 
-  const { loading, messages, newMessage, messageCreatedTime } =
-    useMessageContext();
+  const {
+    loading,
+    messages,
+    newMessage,
+    messageCreatedTime,
+    setShowMessages,
+    showMessages,
+  } = useMessageContext();
 
   const containerRef = useRef<HTMLDivElement>(null);
 

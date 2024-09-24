@@ -1,13 +1,13 @@
 import "./App.css";
 import MessageListContainer from "./components/MessageListContainer";
-import { CampaignContextWrapper } from "./hooks/CampaignContext";
+import { AgentContextWrapper } from "./hooks/AgentContext";
 import { MessageContextWrapper } from "./hooks/MessageContext";
 import { SessionContextWrapper } from "./hooks/SessionContext";
 import { EventStreamingWrapper } from "./hooks/StreamMessageContext";
 
 function App() {
   return (
-    <CampaignContextWrapper>
+    <AgentContextWrapper>
       <SessionContextWrapper>
         <EventStreamingWrapper>
           <MessageContextWrapper>
@@ -15,7 +15,7 @@ function App() {
           </MessageContextWrapper>
         </EventStreamingWrapper>
       </SessionContextWrapper>
-    </CampaignContextWrapper>
+    </AgentContextWrapper>
   );
 }
 
