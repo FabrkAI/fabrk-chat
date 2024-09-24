@@ -60,7 +60,7 @@ function MessageInput() {
     if (!streaming && !newMessage) {
       setTimeout(() => {
         getUpdatedMessages();
-      }, 2000);
+      }, 3000);
     }
   }, [streaming]);
 
