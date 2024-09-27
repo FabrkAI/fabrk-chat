@@ -4,8 +4,6 @@ export enum ApiEndpoints {
   agent = "/agent",
   user = "/user",
   company = "/company",
-  companyConfig = "/company-config",
-  leadCampaign = "/lead-campaign",
   font = "/font",
   session = "/session",
   cssParam = "/css-param",
