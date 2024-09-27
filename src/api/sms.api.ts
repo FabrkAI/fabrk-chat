@@ -60,26 +60,6 @@ export function getSmsMessagesByLeadForDemo({
   return fetchData<SmsMessage[]>(url, request);
 }
 
-export function getNewSmsMessagesByLeadForFabrk({
-  leadId,
-  campaignId,
-  createdTime,
-}: {
-  leadId: string;
-  campaignId: string;
-  createdTime: string | null | undefined;
-}): Promise<SmsMessage> {
-  const url = process.env.REACT_APP_API_URL + ApiEndpoints.sms + "/fabrk/new";
-
-  const request = {
-    method: "POST",
-    body: JSON.stringify({ campaignId, leadId, createdTime }),
-    headers: { "Content-Type": "application/json" },
-  };
-
-  return fetchData<SmsMessage>(url, request);
-}
-
 export function createNewMessage(values: CreateSmsMessage): Promise<any> {
   const url = process.env.REACT_APP_API_URL + "/sms/create";
 
@@ -93,65 +73,4 @@ export function createNewMessage(values: CreateSmsMessage): Promise<any> {
   };
 
   return fetchData(url, request);
-}
-
-export function sendManualSms({
-  leadId,
-  message,
-  phone,
-  user,
-  campaignId,
-  companyId,
-}: {
-  leadId: string;
-  message: string;
-  phone?: string;
-  user?: string;
-  campaignId?: string;
-  companyId?: string;
-}): Promise<any> {
-  const url =
-    process.env.REACT_APP_API_URL + ApiEndpoints.sms + "/send-sms-message";
-
-  const body = JSON.stringify({
-    leadId,
-    message,
-    ...(phone && { phone }),
-    ...(user && { user }),
-    ...(campaignId && { campaignId }),
-    ...(companyId && { companyId }),
-  });
-
-  const request = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    url,
-    body,
-  };
-
-  return fetch(request.url, request);
-}
-
-export function rerunAiSmsResponse(messageId: string) {
-  const url =
-    process.env.REACT_APP_API_URL + ApiEndpoints.sms + "/resend/" + messageId;
-
-  const request = setHeaderOptions({
-    method: "PUT",
-  });
-
-  return fetchData<string>(url, request);
-}
-
-export function getConversations() {
-  const url =
-    process.env.REACT_APP_API_URL + ApiEndpoints.sms + "/conversations";
-
-  const request = setHeaderOptions({
-    method: "GET",
-  });
-
-  return fetchData<ConversationsOverview>(url, request);
 }
