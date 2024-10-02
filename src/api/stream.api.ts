@@ -1,4 +1,5 @@
 import { AssistantStreamEvent } from "openai/resources/beta/assistants";
+import { ApiEndpoints } from "./apiEndpoints";
 
 const baseApi = process.env.REACT_APP_API_URL;
 
@@ -17,7 +18,8 @@ export function streamEvents({
 }) {
   const eventSource = new EventSource(
     baseApi +
-      `/sms/stream/${messageId}${threadId ? "?threadId=" + threadId : ""}`
+      ApiEndpoints.message +
+      `/stream/${messageId}${threadId ? "?threadId=" + threadId : ""}`
   );
 
   // Handle incoming events

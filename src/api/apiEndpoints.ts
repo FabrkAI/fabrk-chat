@@ -1,5 +1,5 @@
 export enum ApiEndpoints {
-  sms = "/sms",
+  message = "/message",
   lead = "/lead",
   agent = "/agent",
   user = "/user",

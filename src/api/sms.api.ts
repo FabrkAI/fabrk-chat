@@ -1,13 +1,9 @@
 import { ApiEndpoints } from "../api/apiEndpoints";
 import { fetchData, setHeaderOptions } from "../api/apiHelpers";
-import {
-  ConversationsOverview,
-  CreateSmsMessage,
-  SmsMessage,
-} from "../api/sms.type";
+import { CreateSmsMessage, SmsMessage } from "../api/sms.type";
 
 export function getSms(): Promise<SmsMessage[]> {
-  const url = process.env.REACT_APP_API_URL + "/sms";
+  const url = process.env.REACT_APP_API_URL + ApiEndpoints.message;
 
   const request = setHeaderOptions({
     method: "GET",
@@ -17,7 +13,7 @@ export function getSms(): Promise<SmsMessage[]> {
 }
 
 export function getSmsCounts(): Promise<number> {
-  const url = process.env.REACT_APP_API_URL + ApiEndpoints.sms + "/count";
+  const url = process.env.REACT_APP_API_URL + ApiEndpoints.message + "/count";
 
   const request = setHeaderOptions({
     method: "GET",
@@ -32,7 +28,7 @@ export function getSmsMessagesByLead({
   leadId: string;
 }): Promise<SmsMessage[]> {
   const url =
-    process.env.REACT_APP_API_URL + ApiEndpoints.sms + "/lead-id/" + leadId;
+    process.env.REACT_APP_API_URL + ApiEndpoints.message + "/lead-id/" + leadId;
 
   const request = {
     method: "GET",
@@ -49,7 +45,7 @@ export function getSmsMessagesByLeadForDemo({
 }): Promise<SmsMessage[]> {
   const url =
     process.env.REACT_APP_API_URL +
-    ApiEndpoints.sms +
+    ApiEndpoints.message +
     "/demo/lead-id/" +
     leadId;
 
@@ -61,7 +57,7 @@ export function getSmsMessagesByLeadForDemo({
 }
 
 export function createNewMessage(values: CreateSmsMessage): Promise<any> {
-  const url = process.env.REACT_APP_API_URL + "/sms/create";
+  const url = process.env.REACT_APP_API_URL + ApiEndpoints.message + "/create";
 
   const request = {
     method: "POST",
