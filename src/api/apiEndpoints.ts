@@ -1,6 +1,6 @@
 export enum ApiEndpoints {
   message = "/message",
-  lead = "/lead",
+  client = "/client",
   agent = "/agent",
   user = "/user",
   company = "/company",
