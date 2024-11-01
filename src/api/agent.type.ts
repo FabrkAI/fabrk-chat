@@ -12,20 +12,15 @@ export type AgentRow = {
   tag_line?: string;
   title?: string;
   step_one_text?: string;
-  klaviyo_list_id?: string;
   reimbursement_criteria?: string;
 
   hero_image_url?: string;
   status: string;
   follow_up_disabled?: boolean;
+  slug: string;
 
-  title_font_weight?: number;
   paragraph_font_weight?: number;
   type?: string;
-  multiple_company_reimbursements_allowed: boolean;
-  subtitle_font_weight?: number;
-  shopify_default?: boolean;
-  shopify_abandoned_cart?: boolean;
   delivery_method?: DeliveryMethods;
 };
 

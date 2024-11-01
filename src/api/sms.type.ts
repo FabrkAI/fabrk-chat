@@ -1,4 +1,4 @@
-import { LeadRow } from "./lead.type";
+import { ClientRow } from "./client.type";
 
 export type TestConfig = {
   lineItems: string;
@@ -19,7 +19,7 @@ export type SmsMessage = {
   company_id?: string;
   tag?: string[];
   generated_by?: string;
-  lead?: LeadRow;
+  lead?: ClientRow;
   lead_id?: string;
   thread_id?: string;
 };

@@ -1,9 +1,9 @@
-import { LeadRow } from "../api/lead.type";
+import { ClientRow } from "./client.type";
 import { AgentRow } from "./agent.type";
 
 export type LeadCampaignsByCompany = {
   signup_date: string;
-  leads: LeadRow[];
+  leads: ClientRow[];
   total_lead_count: number;
   payment_sent_count: number;
   total_reimbursement_count: number;
@@ -13,7 +13,7 @@ export type LeadCampaignRow = {
   id: string;
   lead_id: string;
   campaign_id: string;
-  lead?: LeadRow;
+  lead?: ClientRow;
   created_at: string;
   user_message_count: number;
   status: string;

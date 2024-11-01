@@ -14,12 +14,12 @@ export const SessionContextWrapper = (props: any) => {
   const [sessionId, setSessionId] = useState<string>("");
 
   const companySlug = getCompanyIdFromUrl(url);
-  const agentName = url.split("/")[3];
+  const agentSlug = url.split("/")[3];
 
   const { mutate: createSession, isLoading } = useMutation(createNewSession, {
     onSuccess: async (res) => {
       setSessionId(res.id);
-      localStorage.setItem(`${companySlug}-${agentName}-session_id`, res.id);
+      localStorage.setItem(`${companySlug}-${agentSlug}-session_id`, res.id);
     },
     onError(error: Error) {},
   });
@@ -34,12 +34,12 @@ export const SessionContextWrapper = (props: any) => {
   useEffect(() => {
     if (!sessionId) {
       const foundSessionId = localStorage.getItem(
-        `${companySlug}-${agentName}-session_id`
+        `${companySlug}-${agentSlug}-session_id`
       );
       if (foundSessionId) {
         setSessionId(foundSessionId);
-      } else {
-        createSession({ source: "fabrk", agentId: agent?.id as string });
+      } else if (agentSlug && companySlug) {
+        createSession({ source: "fabrk", agentSlug: agentSlug as string });
       }
     }
   }, [agent]);

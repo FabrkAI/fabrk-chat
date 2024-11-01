@@ -2,17 +2,17 @@ import { ApiEndpoints } from "./apiEndpoints";
 import { fetchData } from "./apiHelpers";
 import { AgentRow } from "./agent.type";
 
-export function getAgentByName({
+export function getAgentBySlug({
   companySlug,
-  agentName,
+  agentSlug,
 }: {
   companySlug: string;
-  agentName: string;
+  agentSlug: string;
 }): Promise<AgentRow> {
   const url =
     process.env.REACT_APP_API_URL +
     ApiEndpoints.agent +
-    `/company/${companySlug}/name/${agentName}`;
+    `/company/${companySlug}/slug/${agentSlug}`;
 
   const request = {
     method: "GET",

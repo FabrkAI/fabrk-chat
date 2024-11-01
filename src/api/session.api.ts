@@ -4,17 +4,17 @@ import { SessionRow } from "./session.type";
 
 export function createNewSession({
   source,
-  agentId,
+  agentSlug,
 }: {
   source: string;
-  agentId: string;
+  agentSlug: string;
 }): Promise<SessionRow> {
   const url = process.env.REACT_APP_API_URL + ApiEndpoints.session + "/input";
 
   const request = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ source, agentId }),
+    body: JSON.stringify({ source, agentSlug }),
   };
 
   return fetchData<SessionRow>(url, request);

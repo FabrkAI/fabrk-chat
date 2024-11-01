@@ -1,4 +1,4 @@
-import { LeadRow } from "./lead.type";
+import { ClientRow } from "./client.type";
 
 export type SessionRow = {
   id: string;
@@ -6,7 +6,7 @@ export type SessionRow = {
   browser: string;
   created_at: string;
   device: string;
-  lead?: LeadRow;
+  lead?: ClientRow;
   lead_id: string;
   os: string;
   os_version: string;

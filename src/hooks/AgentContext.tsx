@@ -2,19 +2,16 @@
 import { createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
 
-import { getAgentByName } from "../api/agent.api";
+import { getAgentBySlug } from "../api/agent.api";
 import { AgentRow } from "../api/agent.type";
-import {
-  getCompanyIdFromUrl,
-  replaceHyphenWithSpace,
-} from "../utils/stringManipulation";
+import { getCompanyIdFromUrl } from "../utils/stringManipulation";
 
 export const AgentContextWrapper = (props: any) => {
   const url = window.location.pathname;
 
   const companySlug = getCompanyIdFromUrl(url);
 
-  const agentName = url.split("/")[3];
+  const agentSlug = url.split("/")[3];
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -22,11 +19,11 @@ export const AgentContextWrapper = (props: any) => {
 
   const { data: agent, isLoading } = useQuery({
     queryFn: () =>
-      getAgentByName({
+      getAgentBySlug({
         companySlug: companySlug as string,
-        agentName: replaceHyphenWithSpace(agentName) as string,
+        agentSlug,
       }),
-    queryKey: ["agent", companySlug, agentName],
+    queryKey: ["agent", companySlug, agentSlug],
     enabled: true,
     onSettled: () => {
       setGlobalLoading(false);
