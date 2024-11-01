@@ -11,25 +11,6 @@ export type HeaderOptions = {
   body?: any;
 };
 
-export function setHeaderOptions({
-  body,
-  method,
-}: RequestOptions): HeaderOptions {
-  const access_token = localStorage.getItem("access_token");
-  const refresh_token = localStorage.getItem("refresh_token");
-  const request = {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      [access_token ? "access_token" : ""]: access_token,
-      [refresh_token ? "refresh_token" : ""]: refresh_token,
-    },
-    [body ? "body" : ""]: body ? body : "",
-  };
-
-  return request;
-}
-
 export function setFileUploadOptions({
   body,
   method,
