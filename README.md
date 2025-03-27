@@ -31,3 +31,15 @@ yarn start
 ```
 
 This will start the development server. Open your browser and go to `http://localhost:3000`. 
+### Functionality Overview
+
+The Fabrk Chat application is built using React and makes extensive use of context to manage its state and behaviors.
+
+**Key Features:**
+- **Agent Context:** Manages interactions with agents, allowing users to communicate with them through the chat interface.
+- **Session Management:** Maintains user sessions, ensuring that the user experience is seamless across different interactions.
+- **Event Streaming:** Supports real-time communication, updating the chat view as new messages are received.
+- **Message Management:** Handles the input, display, and storage of messages within the chat.
+
+The application structure leverages hooks and context providers to keep state management clean and maintainable, promoting reusable components across the app.
+
