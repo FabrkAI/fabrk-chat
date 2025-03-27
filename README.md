@@ -1,36 +1,33 @@
-# Fabrk AI Chat
+# Fabrk Chat
 
-![Fabrk AI chat example](https://mmocksnmsezcyvnbzloj.supabase.co/storage/v1/object/public/images/fabrk-chat-example.png)
+## Getting Started
 
-This is a template react app with UI for streaming AI messages with [Fabrk AI](https://www.fabrk.ai/).
+This project is a chat application built with React and Tailwind CSS.
 
-Here is an example video: https://www.loom.com/share/9617290d556342c088e59c0e9b35de8b?sid=b99e8e2e-5251-4e8d-8766-5b28dc6f0f28
+### Prerequisites
 
-## How to chat with your first Agent
+- Node.js (v14 and above)
+- Yarn (package manager)
 
-- Sign up for a free Fabrk AI account here: https://app.fabrk.ai/signup.
-- Create your first Agent
-- Deploy the Agent
-- Grab your project and Agent slugs
+### Installation
 
+1. Clone the repository:
+   ```bash
+git clone https://github.com/yourusername/fabrk-chat.git
+cd fabrk-chat
 ```
+
+2. Install dependencies:
+   ```bash
 yarn install
 ```
 
-Change file name of `env.local` to `.env`
+### Running the App
 
-```
+To start the application, run:
+
+```bash
 yarn start
 ```
 
-Navigate to your Agent like this:
-
-```
-http://localhost:3000/c/<project-slug>/<agent-slug>
-```
-
-Example: http://localhost:3000/c/fabrk-demo/hacker-news-demo-agent
-
-## Learn More
-
-More details coming soon! Ping me [here](mailto:kevin@fabrk.ai) with questions in the meantime.
+This will start the development server. Open your browser and go to `http://localhost:3000`. 
